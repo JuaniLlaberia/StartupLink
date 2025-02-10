@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -8,8 +9,96 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(uuid())
-  name  String?
-  email String  @unique
-  image String?
+  id          String   @id @default(cuid())
+  name        String?
+  email       String   @unique
+  description String?
+  position    String?
+  image       String?
+  coverImage  String?
+  urls        String[] @default([])
+  skills      String[] @default([])
+
+  Startup       Startup[]
+  StartupMember StartupMember[]
+
+  @@index([email])
+}
+
+model Startup {
+  id         String   @id @default(cuid())
+  name       String
+  mission    String
+  location   String?
+  verified   Boolean  @default(false)
+  stage      String
+  industry   String
+  teamSize   Int?
+  image      String?
+  coverImage String?
+  skills     String[] @default([])
+  createdBy  String
+
+  user User @relation(fields: [createdBy], references: [id])
+
+  StartupMember StartupMember[]
+  StartupRole   StartupRole[]
+  Milestone     Milestone[]
+  Upvote        Upvote[]
+
+  @@index([createdBy])
+  @@index([industry])
+  @@index([teamSize, industry, stage, verified])
+  @@index([name, mission])
+}
+
+model Milestone {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  startupId   String
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@index([startupId])
+}
+
+model Upvote {
+  id        String @id @default(cuid())
+  userId    String
+  startupId String
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, startupId])
+}
+
+model StartupRole {
+  id        String   @id @default(cuid())
+  name      String
+  admin     Boolean  @default(false)
+  startupId String
+  createdAt DateTime @default(now())
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  StartupMember StartupMember[]
+
+  @@index([startupId])
+}
+
+model StartupMember {
+  id        String   @id @default(cuid())
+  startupId String
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  startup Startup     @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    StartupRole @relation(fields: [roleId], references: [id])
+
+  @@unique([startupId, userId])
+  @@index([startupId])
 }
