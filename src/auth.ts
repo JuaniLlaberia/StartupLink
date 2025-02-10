@@ -28,7 +28,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             data: {
               email: user.email,
               name: user.name,
-              // @ts-expect-error Solve why it throws type error on image if it is in the schema
               image: user.image ?? undefined,
             },
           });
