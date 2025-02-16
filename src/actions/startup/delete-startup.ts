@@ -9,7 +9,7 @@ const deleteStartupValidator = z.object({
   id: z.string(),
 });
 
-export const createStartup = authenticatedAction
+export const deleteStartup = authenticatedAction
   .createServerAction()
   .input(deleteStartupValidator)
   .handler(async ({ input: { id }, ctx: { userId } }) => {

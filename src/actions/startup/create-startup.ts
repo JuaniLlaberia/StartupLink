@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod';
+import { Industry, Stage, TeamSize } from '@prisma/client';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
@@ -8,12 +9,11 @@ import { db } from '@/db';
 const createStartupValidator = z.object({
   name: z.string().min(1, 'Must provide a startup name'),
   mission: z.string().min(25, 'Startup mission must be at least 25 char.'),
-  location: z.string(),
-  stage: z.string(),
-  industry: z.string(),
-  teamSize: z.number(),
+  location: z.optional(z.string()),
+  stage: z.nativeEnum(Stage),
+  industry: z.nativeEnum(Industry),
+  teamSize: z.nativeEnum(TeamSize),
   image: z.optional(z.string()),
-  skills: z.array(z.string()),
 });
 
 export const createStartup = authenticatedAction
