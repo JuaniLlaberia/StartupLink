@@ -8,6 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Industry {
+  TECH_SOFTWARE
+  FINANCE
+  HEALTHCARE
+  EDUCATION
+  SUSTAINABILITY
+  ECOMMERCE
+  ENTERTAINMENT
+  TRANSPORTATION
+  FOOD
+  REAL_ESTATE
+  PRODUCTIVITY
+  SOCIAL
+}
+
+enum Stage {
+  IDEA
+  MVP
+  PRE_SEED
+  SEED
+  EARLY_STAGE
+  GROWTH
+  LATE_STAGE
+  EXIT
+}
+
+enum TeamSize {
+  ONE_TO_TEN
+  TEN_TO_FIFTY
+  FIFTY_TO_NINETY_NINE
+  ONE_HUNDRED_OR_MORE
+}
+
 model User {
   id          String   @id @default(cuid())
   name        String?
@@ -31,9 +64,9 @@ model Startup {
   mission    String
   location   String?
   verified   Boolean  @default(false)
-  stage      String
-  industry   String
-  teamSize   Int?
+  stage      Stage
+  industry   Industry
+  teamSize   TeamSize
   image      String?
   coverImage String?
   skills     String[] @default([])
