@@ -1,13 +1,12 @@
-import { signIn } from '@/auth';
 import { Button } from '../ui/button';
 import { GoogleLogo } from './google-logo';
+import { signInAction } from '@/actions/auth/sign-in';
 
 const GoogleButton = () => {
   return (
     <form
       action={async () => {
-        'use server';
-        await signIn('google');
+        await signInAction('google');
       }}
     >
       <Button

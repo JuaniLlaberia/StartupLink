@@ -1,13 +1,12 @@
-import { signIn } from '@/auth';
 import { Button } from '../ui/button';
 import { GitLabLogo } from './gitlab-logo';
+import { signInAction } from '@/actions/auth/sign-in';
 
 const GitlabButton = () => {
   return (
     <form
       action={async () => {
-        'use server';
-        await signIn('gitlab');
+        await signInAction('gitlab');
       }}
     >
       <Button

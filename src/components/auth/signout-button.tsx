@@ -1,23 +1,29 @@
 import type { ReactNode } from 'react';
 
 import { Button } from '../ui/button';
-import { signOut } from '@/auth';
+import { signOutAction } from '@/actions/auth/sign-out';
 
 type SignOutButtonProps = {
-  children?: ReactNode;
+  trigger?: ReactNode;
 };
 
-const SignOutButton = ({ children }: SignOutButtonProps) => {
+const SignOutButton = ({ trigger }: SignOutButtonProps) => {
   return (
     <form
       action={async () => {
         'use server';
-        await signOut();
+        await signOutAction();
       }}
     >
-      <Button className='flex-1 w-full max-w-md' type='submit'>
-        {children || 'Sign Out'}
-      </Button>
+      {trigger ? (
+        <button className='w-full' type='submit'>
+          {trigger}
+        </button>
+      ) : (
+        <Button asChild type='submit'>
+          Sign Out
+        </Button>
+      )}
     </form>
   );
 };
