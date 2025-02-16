@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
@@ -20,4 +21,6 @@ export const updateUser = authenticatedAction
   .input(updateUserValidator)
   .handler(async ({ input, ctx: { userId } }) => {
     await db.user.update({ where: { id: userId }, data: { ...input } });
+
+    revalidatePath('/profile');
   });
