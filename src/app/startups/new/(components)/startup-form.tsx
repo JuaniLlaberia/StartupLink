@@ -81,11 +81,11 @@ const FormNavigation = ({
         onClick={onBack}
         variant='outline'
         size='sm'
-        className='w-full md:w-auto'
+        className='w-full md:w-auto group'
         aria-label='Previous step'
         type='button'
       >
-        <ChevronLeft className='size-4 mr-1.5' />
+        <ChevronLeft className='size-4 mr-1.5 group-hover:-translate-x-1 transition-transform' />
         Go back
       </Button>
     )}
@@ -166,11 +166,7 @@ const StartupForm = () => {
           </p>
         )}
 
-        <FormNavigation
-          onBack={e => prevStep(e)}
-          isPending={isPending}
-          isLastStep={false}
-        />
+        <FormNavigation isPending={isPending} isLastStep={false} />
       </StepWrapper>,
 
       // Mission step
