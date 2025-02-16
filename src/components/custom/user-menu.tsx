@@ -9,6 +9,7 @@ import {
 import { getUser } from '@/access-data/user/get-auth-user';
 
 import SignOutButton from '../auth/signout-button';
+import ThemeButton from './theme-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,6 +72,7 @@ const UserMenu = async () => {
             </Link>
           </DropdownMenuItem>
         ))}
+        <ThemeButton />
         <DropdownMenuSeparator className='m-0' />
         <SignOutButton
           trigger={
