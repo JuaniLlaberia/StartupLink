@@ -1,21 +1,13 @@
 import NextTopLoader from 'nextjs-toploader';
-import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
+import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
 
 import ReactQueryProvider from '@/components/custom/react-query-provider';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+import Navbar from '@/components/custom/navbar';
+import Footer from '@/components/custom/footer';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -29,18 +21,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={GeistSans.className}>
         <NextTopLoader showSpinner={false} />
         <Toaster richColors />
-        <ThemeProvider
-          attribute='class'
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ThemeProvider attribute='class' enableSystem disableTransitionOnChange>
+          <main className='p-4 px-6 md:px-16 lg:px-24 xl:px-36'>
+            <ReactQueryProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </ReactQueryProvider>
           </main>
         </ThemeProvider>
       </body>
