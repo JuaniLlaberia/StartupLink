@@ -64,6 +64,7 @@ export async function searchStartups({
       image: true,
       coverImage: true,
       createdBy: true,
+      createdAt: true,
       user: { select: { name: true } },
     },
     orderBy: [{ verified: 'desc' }],

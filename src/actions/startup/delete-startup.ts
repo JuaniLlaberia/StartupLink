@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
@@ -21,4 +22,6 @@ export const deleteStartup = authenticatedAction
       throw new Error('You have no permission to perform this action');
 
     await db.startup.delete({ where: { id } });
+
+    revalidatePath('/my-startups');
   });
