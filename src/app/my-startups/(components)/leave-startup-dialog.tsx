@@ -2,7 +2,7 @@
 
 import { useState, type ReactElement } from 'react';
 import { toast } from 'sonner';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { Loader2, LogOut } from 'lucide-react';
 
 import {
   Dialog,
@@ -17,7 +17,6 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { useServerActionMutation } from '@/hooks/use-server-action';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { leaveStartup as leaveStartupAction } from '@/actions/startup/leave-startup';
 
 type LeaveStartupDialogProps = {
@@ -59,38 +58,43 @@ const LeaveStartupDialog = ({
       <DialogTrigger asChild>
         {trigger || <Button size='sm'>Leave Startup</Button>}
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className='text-xl'>Leave Startup</DialogTitle>
-          <DialogDescription>
-            You are about to leave{' '}
-            <span className='font-medium'>{startupName}</span> startup.
-          </DialogDescription>
+      <DialogContent withCloseButton={false} className='max-w-md space-y-6 p-4'>
+        <DialogHeader className='flex flex-col items-center gap-2'>
+          <LogOut className='text-red-400 size-7' />
+          <div className='text-center space-y-2'>
+            <DialogTitle className='text-base'>Leave this startup?</DialogTitle>
+            <DialogDescription className='text-center max-w-sm'>
+              You are about to leave{' '}
+              <span className='font-medium'>{startupName}</span> startup.{' '}
+              <span className='font-medium'>
+                You can join back if accepted by founders
+              </span>
+            </DialogDescription>
+          </div>
         </DialogHeader>
-
-        <Alert variant='informative'>
-          <AlertCircle className='h-4 w-4' />
-          <AlertTitle>Information</AlertTitle>
-          <AlertDescription>
-            You can join back if accepted by founders
-          </AlertDescription>
-        </Alert>
-
-        <DialogFooter className='justify-end'>
-          <DialogClose asChild>
-            <Button size='sm' variant='outline' disabled={isLoading}>
-              Cancel
+        <DialogFooter>
+          <div className='w-full flex flex-col items-center gap-2'>
+            <Button
+              disabled={isLoading}
+              size='sm'
+              variant='destructive'
+              onClick={handleleaveStartup}
+              className='w-full'
+            >
+              {isLoading && <Loader2 className='size-4 animate-spin' />}
+              Confirm
             </Button>
-          </DialogClose>
-          <Button
-            disabled={isLoading}
-            size='sm'
-            onClick={handleleaveStartup}
-            className='min-w-16'
-          >
-            {isLoading && <Loader2 className='size-4 animate-spin' />}
-            Confirm
-          </Button>
+            <DialogClose asChild>
+              <Button
+                size='sm'
+                variant='ghost'
+                disabled={isLoading}
+                className='w-full'
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

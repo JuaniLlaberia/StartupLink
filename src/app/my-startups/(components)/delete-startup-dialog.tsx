@@ -18,7 +18,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { useServerActionMutation } from '@/hooks/use-server-action';
 import { deleteStartup as deleteStartupAction } from '@/actions/startup/delete-startup';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 type DeleteStartupDialogProps = {
   startupId: string;
@@ -60,38 +59,47 @@ const DeleteStartupDialog = ({
       <DialogTrigger asChild>
         {trigger || <Button size='sm'>Delete Startup</Button>}
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className='text-xl'>Delete Startup</DialogTitle>
-          <DialogDescription>
-            You are about to delete{' '}
-            <span className='font-medium'>{startupName}</span> startup. All data
-            related to this startup will be deleted.
-          </DialogDescription>
+      <DialogContent withCloseButton={false} className='max-w-md space-y-6 p-4'>
+        <DialogHeader className='flex flex-col items-center gap-2'>
+          <AlertCircle className='text-red-400 size-7' />
+          <div className='text-center space-y-2'>
+            <DialogTitle className='text-base'>
+              Delete this startup?
+            </DialogTitle>
+            <DialogDescription className='text-center max-w-sm'>
+              You are about to delete{' '}
+              <span className='font-medium'>{startupName}</span> startup. All
+              data related to this startup will be deleted.{' '}
+              <span className='text-red-500 font-medium'>
+                This action is irreversible.
+              </span>
+            </DialogDescription>
+          </div>
         </DialogHeader>
 
-        <Alert variant='destructive'>
-          <AlertCircle className='h-4 w-4' />
-          <AlertTitle>Warning</AlertTitle>
-          <AlertDescription>This action is ireversible</AlertDescription>
-        </Alert>
-
-        <DialogFooter className='justify-end'>
-          <DialogClose asChild>
-            <Button size='sm' variant='outline' disabled={isLoading}>
-              Cancel
+        <DialogFooter>
+          <div className='w-full flex flex-col items-center gap-2'>
+            <Button
+              disabled={isLoading}
+              size='sm'
+              variant='destructive'
+              onClick={handleDeleteStartup}
+              className='w-full'
+            >
+              {isLoading && <Loader2 className='size-4 animate-spin' />}
+              Confirm
             </Button>
-          </DialogClose>
-          <Button
-            disabled={isLoading}
-            size='sm'
-            variant='destructive'
-            onClick={handleDeleteStartup}
-            className='min-w-16'
-          >
-            {isLoading && <Loader2 className='size-4 animate-spin' />}
-            Confirm
-          </Button>
+            <DialogClose asChild>
+              <Button
+                size='sm'
+                variant='ghost'
+                disabled={isLoading}
+                className='w-full'
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
