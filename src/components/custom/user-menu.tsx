@@ -22,8 +22,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const LINKS = [
   {
-    label: 'Dashboard',
-    url: '/dashboard',
+    label: 'My startups',
+    url: '/my-startups',
     icon: LayoutDashboard,
   },
   {
