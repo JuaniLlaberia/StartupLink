@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Industry, Stage, TeamSize } from '@prisma/client';
 import { motion } from 'framer-motion';
 import { AlertCircle, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import type { MouseEvent, ReactNode } from 'react';
 
 import Radio from '@/components/ui/radio';
@@ -101,6 +102,7 @@ const StartupValidationSchema = z.object({
 });
 
 const StartupForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -122,10 +124,10 @@ const StartupForm = () => {
     {
       mutationKey: ['create-startup'],
       onSuccess: () => {
+        router.push('/my-startups');
         toast.success('Startup created successfully');
       },
-      onError: err => {
-        console.log(err);
+      onError: () => {
         toast.error('Failed to create startup');
       },
     }

@@ -12,12 +12,14 @@ import {
   StartupData,
 } from './startup-reusable';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { DialogTitle } from '@/components/ui/dialog';
 
 type StartupSheetProps = { data: StartupData };
 
 const StartupSheet = ({ data }: StartupSheetProps) => {
   return (
     <SheetContent className='p-2'>
+      <DialogTitle />
       <div className='relative mb-9'>
         {data.coverImage ? (
           <div className='w-full h-32 rounded-lg'>

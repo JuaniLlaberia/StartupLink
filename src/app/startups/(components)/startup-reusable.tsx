@@ -18,7 +18,7 @@ export const StartupHeader = ({
 }: StartupHeaderProps) => (
   <div className='flex gap-4 items-center'>
     {withImg && (
-      <Avatar className='size-14'>
+      <Avatar className='size-14 border border-border'>
         <AvatarImage src={image ?? undefined} />
         <AvatarFallback>{name.charAt(0)}</AvatarFallback>
       </Avatar>
