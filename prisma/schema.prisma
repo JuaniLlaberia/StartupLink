@@ -41,16 +41,27 @@ enum TeamSize {
   ONE_HUNDRED_OR_MORE
 }
 
+enum Objective {
+  FIND_COFOUNDER // Looking for another co-found
+  JOIN_AS_COFOUNDER // Looking to partner up with someone else
+  JOIN_AS_DEVELOPER // I want to join a startup as a developer
+  INVESTOR // I want to join a startup as an investor
+  HIRING // I have a startup and I am looking for team members
+  NETWORKING // Collaborate with other co-founders
+}
+
 model User {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String?
-  email       String   @unique
+  email       String    @unique
   description String?
   position    String?
+  location    String?
+  objective   Objective @default(FIND_COFOUNDER)
   image       String?
   coverImage  String?
-  urls        String[] @default([])
-  skills      String[] @default([])
+  urls        String[]  @default([])
+  skills      String[]  @default([])
 
   Startup       Startup[]
   StartupMember StartupMember[]
@@ -71,6 +82,7 @@ model Startup {
   coverImage String?
   skills     String[] @default([])
   createdBy  String
+  createdAt  DateTime @default(now())
 
   user User @relation(fields: [createdBy], references: [id])
 
