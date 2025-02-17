@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { AlertCircle, CloudUpload, Loader2, Settings } from 'lucide-react';
-import { User } from '@prisma/client';
-import { useForm } from 'react-hook-form';
+import { Objective, User } from '@prisma/client';
+import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,11 +16,21 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useServerActionMutation } from '@/hooks/use-server-action';
 import { updateUser as updateUserAction } from '@/actions/user/update-user';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { OBJECTIVE_LABELS } from '@/lib/labels';
 
 export type ProfileFormData = {
   name: string;
   position?: string;
   description?: string;
+  location?: string;
+  objective?: Objective;
   image?: string;
   coverImage?: string;
   skills: string[];
@@ -30,12 +40,23 @@ const UserProfileValidatorSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.optional(z.string()),
   position: z.optional(z.string()),
+  location: z.optional(z.string()),
+  objective: z.optional(z.nativeEnum(Objective)),
   skills: z.array(z.string()),
 });
 
 const UserProfileForm = ({ user }: { user: User }) => {
-  const { name, email, image, coverImage, description, position, skills } =
-    user;
+  const {
+    name,
+    email,
+    image,
+    coverImage,
+    description,
+    position,
+    skills,
+    location,
+    objective,
+  } = user;
 
   const {
     register,
@@ -48,6 +69,8 @@ const UserProfileForm = ({ user }: { user: User }) => {
       name: name ?? undefined,
       description: description ?? undefined,
       position: position ?? undefined,
+      location: location ?? undefined,
+      objective: objective ?? undefined,
       skills: skills?.map(skill => String(skill)) ?? [],
     },
   });
@@ -57,7 +80,10 @@ const UserProfileForm = ({ user }: { user: User }) => {
     {
       mutationKey: ['update-user'],
       onSuccess: () => toast.success('Account settings updated successfully'),
-      onError: () => toast.error('Failed to update account settings'),
+      onError: err => {
+        console.log(err);
+        toast.error('Failed to update account settings');
+      },
     }
   );
 
@@ -141,6 +167,45 @@ const UserProfileForm = ({ user }: { user: User }) => {
               className='resize-none'
               {...register('description')}
               disabled={isPending}
+            />
+          </SettingsCard>
+          {/* Location */}
+          <SettingsCard
+            title='Location'
+            description='Enter your city and country to help others discover and connect with you based on your location'
+          >
+            <Input
+              placeholder='Your location'
+              {...register('location')}
+              disabled={isPending}
+            />
+          </SettingsCard>
+          {/* Objective */}
+          <SettingsCard
+            title='Objective'
+            description='Let other users know what are you looking for'
+          >
+            <Controller
+              control={control}
+              name='objective'
+              render={({ field }) => (
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value ?? ''}
+                  defaultValue={field.value ?? ''}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select your objective' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(OBJECTIVE_LABELS).map(([key, label]) => (
+                      <SelectItem key={key} value={key}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             />
           </SettingsCard>
           {/* Profile image */}

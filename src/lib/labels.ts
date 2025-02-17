@@ -30,3 +30,14 @@ export const TEAM_SIZE_LABELS: Record<string, string> = {
   FIFTY_TO_NINETY_NINE: '50-99',
   ONE_HUNDRED_OR_MORE: '100 or more',
 };
+
+export const OBJECTIVE_LABELS: Record<string, string> = {
+  FIND_COFOUNDER:
+    "I have an idea for a startup and I'm looking for a co-founder.",
+  JOIN_AS_COFOUNDER:
+    "I'm looking to partner up on someone else's idea as a co-founder.",
+  JOIN_AS_DEVELOPER: "I'm a developer/designer looking to join a startup.",
+  INVESTOR: "I'm an investor looking for promising startups.",
+  HIRING: "I have a startup and I'm looking for team members.",
+  NETWORKING: "I'm looking to network and collaborate with startup founders.",
+};
