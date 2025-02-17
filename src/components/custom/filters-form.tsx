@@ -1,7 +1,8 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 import { useCreateQueryString } from '@/hooks/use-create-query-string';
 import { Button } from '../ui/button';
@@ -40,6 +41,9 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
   const pathname = usePathname();
   const { createQueryString, removeParams } = useCreateQueryString();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isResetting, setIsResetting] = useState<boolean>(false);
+
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(
     () => {
       return FILTERS.reduce((acc, filter) => {
@@ -50,6 +54,8 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
   );
 
   const handleApplyFilters = () => {
+    setIsLoading(true);
+
     const validFilters = Object.entries(selectedFilters).reduce<
       Record<string, string>
     >((acc, [key, value]) => {
@@ -60,14 +66,44 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
     }, {});
 
     const queryString = createQueryString(validFilters);
-    router.push(`${pathname}${queryString}`);
+
+    const newUrl = `${pathname}${queryString}`;
+    if (
+      newUrl ===
+      `${pathname}${
+        searchParams.toString() ? `?${searchParams.toString()}` : ''
+      }`
+    ) {
+      setIsLoading(false);
+      return;
+    }
+
+    router.push(newUrl);
   };
 
   const handleResetFilters = () => {
-    setSelectedFilters({});
+    setIsResetting(true);
+
+    setSelectedFilters(
+      FILTERS.reduce((acc, filter) => {
+        acc[filter.key] = 'any';
+        return acc;
+      }, {} as SelectedFilters)
+    );
+
+    if (!Array.from(searchParams.keys()).length) {
+      setIsResetting(false);
+      return;
+    }
+
     const queryString = removeParams(FILTERS.map(filter => filter.key));
     router.push(`${pathname}${queryString}`);
   };
+
+  useEffect(() => {
+    setIsLoading(false);
+    setIsResetting(false);
+  }, [searchParams]);
 
   return (
     <div className='space-y-4'>
@@ -100,11 +136,22 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
           </li>
         ))}
       </ul>
-      <div className='space-x-2.5'>
-        <Button size='sm' onClick={handleApplyFilters}>
+      <div className='flex items-center space-x-2.5'>
+        <Button
+          size='sm'
+          onClick={handleApplyFilters}
+          disabled={isLoading || isResetting}
+        >
+          {isLoading && <Loader2 className='size-4 animate-spin' />}
           Apply
         </Button>
-        <Button size='sm' variant='outline' onClick={handleResetFilters}>
+        <Button
+          size='sm'
+          variant='outline'
+          onClick={handleResetFilters}
+          disabled={isLoading || isResetting}
+        >
+          {isResetting && <Loader2 className='size-4 animate-spin' />}
           Reset all
         </Button>
       </div>
