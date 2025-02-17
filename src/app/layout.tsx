@@ -23,12 +23,12 @@ export default function RootLayout({
     <html lang='en'>
       <body className={GeistSans.className}>
         <NextTopLoader showSpinner={false} />
-        <Toaster richColors />
+        <Toaster richColors theme='light' />
         <ThemeProvider attribute='class' enableSystem disableTransitionOnChange>
           <main className='p-4 px-6 md:px-16 lg:px-24 xl:px-36'>
             <ReactQueryProvider>
               <Navbar />
-              {children}
+              <div className='min-h-[calc(100dvh-7rem)]'>{children}</div>
               <Footer />
             </ReactQueryProvider>
           </main>
