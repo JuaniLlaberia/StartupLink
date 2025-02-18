@@ -195,7 +195,7 @@ const EXTRA_FEATURES = [
 
 const Features = () => {
   return (
-    <div className='w-full flex flex-col items-center justify-center py-16'>
+    <div className='relative w-full flex flex-col items-center justify-center py-16'>
       <div className='flex items-center justify-center flex-col gap-2'>
         <h4 className='text-5xl font-semibold text-center'>Our features</h4>
         <p className='text-xl font-medium text-center text-muted-foreground max-w-lg'>
@@ -212,7 +212,7 @@ const Features = () => {
           {MAIN_FEATURES.map(({ label, description, content }, i) => (
             <li
               key={i}
-              className='flex flex-col justify-center border border-border rounded-lg bg-muted/50 p-8 shadow group hover:cursor-pointer'
+              className='z-50 flex flex-col justify-center border border-border rounded-lg bg-muted/50 p-8 shadow group hover:cursor-pointer'
             >
               <h6 className='font-semibold text-lg mb-3'>{label}</h6>
               <p className='text-muted-foreground text-sm'>{description}</p>
@@ -230,7 +230,7 @@ const Features = () => {
           {EXTRA_FEATURES.map(({ label, icon: Icon, description }, i) => (
             <li
               key={i}
-              className='relative flex flex-col items-center size-40 bg-muted/50 border border-border rounded-lg p-8 shadow group hover:cursor-pointer'
+              className='relative z-50 flex flex-col items-center size-40 bg-muted/50 border border-border rounded-lg p-8 shadow group hover:cursor-pointer'
             >
               {/* Original content */}
               <div className='bg-primary rounded-xl p-3 shadow'>
@@ -250,6 +250,7 @@ const Features = () => {
           ))}
         </ul>
       </div>
+      <div className='absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px),radial-gradient(1200px_at_50%_50%,rgba(255,255,255,0)_0%,white_100%)] bg-[size:6rem_4rem,6rem_4rem,auto] [mask-image:radial-gradient(ellipse_60%_90%_at_90%_5%,#000_70%,transparent_110%)]'></div>
     </div>
   );
 };
