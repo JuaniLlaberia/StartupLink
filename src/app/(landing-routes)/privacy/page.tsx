@@ -2,12 +2,12 @@ const PrivacyPolicyPage = () => {
   return (
     <div className='flex justify-center'>
       <div className='flex flex-col max-w-xl gap-4 my-10 px-4'>
-        <h2 className='font-bold text-lg'>[APP NAME] Privacy Policy</h2>
+        <h2 className='font-bold text-lg'>StartupLink Privacy Policy</h2>
         <>
-          This Privacy Policy describes how [APP NAME] (&quot;we&quot;,
+          This Privacy Policy describes how StartupLink (&quot;we&quot;,
           &quot;our&quot;, or &quot;us&quot;) collects, uses, and shares
-          information when you use our website located at [APP NAME].app (the
-          &quot;Website&quot;) and the services offered by [APP NAME] (the
+          information when you use our website located at StartupLink.app (the
+          &quot;Website&quot;) and the services offered by StartupLink (the
           &quot;Service&quot;).
         </>
         <p>
@@ -110,7 +110,7 @@ const PrivacyPolicyPage = () => {
         </p>
         <p>
           If you have any questions about this Privacy Policy, please contact us
-          at [INSERT EMAIL].
+          at juanillaberiayt@gmail.com.
         </p>
         <p className='mt-4 text-center text-sm text-muted-foreground'>
           Last updated: February 18, 2025
