@@ -2,19 +2,13 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/button';
+import FeebackDialog from '../landing-page/feedback-dialog';
+import Logo from './logo';
 
 const LINKS = [
   {
-    label: 'Changelog',
-    url: 'changelog',
-  },
-  {
     label: 'About',
     url: 'about',
-  },
-  {
-    label: 'Feedback',
-    url: 'feedback',
   },
   {
     label: 'Privacy',
@@ -29,7 +23,7 @@ const LINKS = [
 const Footer = () => {
   return (
     <footer className='flex items-center justify-between p-1'>
-      <h1 className='bg-gray-400 p-1 w-32 rounded-lg'>.</h1>
+      <Logo />
       <ul className='flex items-center gap-2'>
         {LINKS.map(({ label, url }) => (
           <li key={url}>
@@ -44,6 +38,7 @@ const Footer = () => {
             </Link>
           </li>
         ))}
+        <FeebackDialog />
         <span className='mx-2.5 text-muted-foreground'>|</span>
         <p className='text-muted-foreground text-xs font-medium'>
           StartupHub © {new Date().getFullYear()} All rights reserved

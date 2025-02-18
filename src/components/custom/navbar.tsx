@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import Logo from './logo';
 import AuthDialog from '../auth/auth-dialog';
 import UserMenu from './user-menu';
 import SearchDialog from './search-dialog';
@@ -29,7 +30,7 @@ const Navbar = async () => {
   return (
     <nav className='flex items-center justify-between p-1'>
       <div className='flex items-center gap-8'>
-        <h1 className='bg-gray-400 p-1 w-32 rounded-lg'>.</h1>
+        <Logo />
         <ul className='flex gap-2'>
           {LINKS.map(({ url, label }) => (
             <li key={url}>
