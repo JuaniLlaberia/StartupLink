@@ -50,6 +50,13 @@ enum Objective {
   NETWORKING // Collaborate with other co-founders
 }
 
+enum QuestionType {
+  QUESTION
+  ADVICE
+  SHOWCASE
+  DISCUSSION
+}
+
 model User {
   id          String    @id @default(cuid())
   name        String?
@@ -65,6 +72,8 @@ model User {
 
   Startup       Startup[]
   StartupMember StartupMember[]
+  Question      Question[]
+  Answer        Answer[]
 
   @@index([email])
 }
@@ -153,4 +162,32 @@ model Feedback {
   email     String
   feedback  String
   createdAt DateTime @default(now())
+}
+
+model Question {
+  id        String       @id @default(cuid())
+  question  String
+  body      String
+  tags      String[]
+  score     Int          @default(0)
+  edited    Boolean      @default(false)
+  type      QuestionType @default(QUESTION)
+  createdBy String
+  createdAt DateTime     @default(now())
+
+  user   User     @relation(fields: [createdBy], references: [id])
+  Answer Answer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  answer     String
+  score      Int      @default(0)
+  edited     Boolean  @default(false)
+  createdBy  String
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [createdBy], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
 }
