@@ -1,4 +1,7 @@
+'use server';
+
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 import { db } from '@/db';
 import { authenticatedAction } from '@/lib/safe-actions';
@@ -14,10 +17,12 @@ export const updateAnswer = authenticatedAction
   .handler(async ({ input: { id, answer }, ctx: { userId } }) => {
     const answerDB = await db.answer.findUnique({
       where: { id },
-      select: { createdBy: true },
+      select: { createdBy: true, questionId: true },
     });
     if (answerDB?.createdBy !== userId)
       throw new Error('You have no permission to perform this action');
 
     await db.answer.update({ where: { id }, data: { answer, edited: true } });
+
+    revalidatePath(`/forum/${answerDB.questionId}`);
   });

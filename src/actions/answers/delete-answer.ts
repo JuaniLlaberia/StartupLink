@@ -16,12 +16,12 @@ export const deleteAnswer = authenticatedAction
   .handler(async ({ input: { id }, ctx: { userId } }) => {
     const answer = await db.answer.findUnique({
       where: { id },
-      select: { createdBy: true },
+      select: { createdBy: true, questionId: true },
     });
     if (answer?.createdBy !== userId)
       throw new Error('You have no permission to perform this action');
 
     await db.answer.delete({ where: { id } });
 
-    revalidatePath('/forum');
+    revalidatePath(`/forum/${answer.questionId}`);
   });
