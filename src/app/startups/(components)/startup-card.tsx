@@ -9,6 +9,7 @@ import {
   StartupSkills,
   type StartupData,
 } from './startup-reusable';
+import UpvoteButton from './upvote-button';
 
 export type StartupCardProps = {
   data: StartupData;
@@ -18,7 +19,7 @@ const StartupCard = ({ data }: StartupCardProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <li className='border border-border rounded-lg p-5 space-y-5 shadow cursor-pointer hover:bg-muted/35 transition-colors'>
+        <li className='relative border border-border rounded-lg p-5 space-y-5 shadow cursor-pointer hover:bg-muted/35 transition-colors'>
           <StartupHeader data={data} withImg />
           <div className='px-0.5'>
             <StartupMetadata {...data} />
@@ -33,6 +34,11 @@ const StartupCard = ({ data }: StartupCardProps) => {
               <ChevronRight className='size-4 group-hover:translate-x-0.5 transition-transform' />
             </Button>
           </div>
+          <UpvoteButton
+            startupId={data.id}
+            className='absolute top-0 right-5'
+            hasUserUpvoted={data.hasUserUpvoted}
+          />
         </li>
       </SheetTrigger>
       <StartupSheet data={data} />

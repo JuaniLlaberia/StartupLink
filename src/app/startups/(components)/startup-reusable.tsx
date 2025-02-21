@@ -5,7 +5,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { INDUSTRY_LABELS, STAGE_LABELS, TEAM_SIZE_LABELS } from '@/lib/labels';
 import { Badge } from '@/components/ui/badge';
 
-export type StartupData = Startup & { user: { name: string | null } };
+export type StartupData = Startup & { user: { name: string | null } } & {
+  hasUserUpvoted: boolean;
+};
 
 type StartupHeaderProps = {
   data: Pick<StartupData, 'name' | 'user' | 'image' | 'verified'>;
