@@ -1,13 +1,12 @@
 import Link from 'next/link';
 import {
   BellDot,
-  Bookmark,
   LayoutDashboard,
   LogOut,
   PlusCircle,
   User,
 } from 'lucide-react';
-import { getUser } from '@/access-data/user/get-auth-user';
+import { redirect } from 'next/navigation';
 
 import SignOutButton from '../auth/signout-button';
 import ThemeButton from './theme-button';
@@ -20,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { getUser } from '@/access-data/user/get-auth-user';
 
 const LINKS = [
   {
@@ -38,11 +38,6 @@ const LINKS = [
     icon: PlusCircle,
   },
   {
-    label: 'Saved',
-    url: '/startups/saved',
-    icon: Bookmark,
-  },
-  {
     label: 'Notifications',
     url: '/notifications',
     icon: BellDot,
@@ -51,6 +46,7 @@ const LINKS = [
 
 const UserMenu = async () => {
   const user = await getUser();
+  if (!user) redirect('/');
 
   return (
     <DropdownMenu>
