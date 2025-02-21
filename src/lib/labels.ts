@@ -48,3 +48,10 @@ export const QUESTIONS_TYPE_LABELS: Record<string, string> = {
   SHOWCASE: 'Showcase',
   DISCUSSION: 'Discussion',
 };
+
+export const USERS_WEEKLY_AVAILABILITY_LABELS: Record<string, string> = {
+  ZERO_TO_TEN: '0-10 hours',
+  TEN_TO_TWENTY: '10-20 hours',
+  TWENTY_TO_THIRTY: '20-30 hours',
+  MORE_THAN_THIRTY: 'More than 30 hours',
+};
