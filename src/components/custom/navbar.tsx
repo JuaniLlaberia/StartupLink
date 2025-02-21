@@ -29,9 +29,9 @@ const Navbar = async () => {
 
   return (
     <nav className='flex items-center justify-between p-1'>
-      <div className='flex items-center gap-8'>
+      <div className='flex items-center gap-2 md:gap-8'>
         <Logo />
-        <ul className='flex gap-2'>
+        <ul className='flex md:gap-2'>
           {LINKS.map(({ url, label }) => (
             <li key={url}>
               <Link
@@ -60,8 +60,10 @@ const Navbar = async () => {
         </div>
       ) : (
         <div className='flex items-center gap-2.5'>
-          <SearchDialog />
-          <NotificationsMenu />
+          <div className='hidden md:flex md:items-center md:gap-2.5'>
+            <SearchDialog />
+            <NotificationsMenu />
+          </div>
           <UserMenu />
         </div>
       )}

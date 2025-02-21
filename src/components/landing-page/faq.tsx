@@ -35,7 +35,7 @@ const QUESTIONS = [
 
 const Faq = () => {
   return (
-    <div className='grid grid-cols-7 gap-12 py-16'>
+    <div className='grid grid-cols-1 md:grid-cols-7 gap-12 py-16'>
       <div className='col-span-3'>
         <h3 className='text-5xl font-semibold'>
           Common questions for the curious

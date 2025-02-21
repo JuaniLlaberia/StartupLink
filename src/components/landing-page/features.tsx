@@ -212,7 +212,7 @@ const Features = () => {
           {MAIN_FEATURES.map(({ label, description, content }, i) => (
             <li
               key={i}
-              className='z-50 flex flex-col justify-center border border-border rounded-lg bg-muted/50 p-8 shadow group hover:cursor-pointer'
+              className='z-50 flex flex-col justify-center border border-border rounded-lg bg-muted/50 p-8 shadow group hover:cursor-pointer overflow-hidden'
             >
               <h6 className='font-semibold text-lg mb-3'>{label}</h6>
               <p className='text-muted-foreground text-sm'>{description}</p>
@@ -226,11 +226,11 @@ const Features = () => {
         ...And so much more!
       </h5>
       <div className='w-full max-w-2xl mt-12'>
-        <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+        <ul className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           {EXTRA_FEATURES.map(({ label, icon: Icon, description }, i) => (
             <li
               key={i}
-              className='relative z-50 flex flex-col items-center size-40 bg-muted/50 border border-border rounded-lg p-8 shadow group hover:cursor-pointer'
+              className='relative z-50 flex flex-col items-center size-40 bg-muted/50 border border-border rounded-lg p-8 shadow group hover:cursor-pointer overflow-hidden'
             >
               {/* Original content */}
               <div className='bg-primary rounded-xl p-3 shadow'>

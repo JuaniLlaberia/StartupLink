@@ -10,7 +10,7 @@ const SettingsCard = ({
   description: string;
 }) => {
   return (
-    <li className='grid grid-cols-2 w-full border-t border-border py-5 px-3'>
+    <li className='grid grid-cols-1 gap-5 md:gap-1 md:grid-cols-2 w-full border-t border-border py-5 px-3'>
       <div>
         <h4 className='text-sm font-medium'>{title}</h4>
         <p className='text-sm text-muted-foreground max-w-lg'>{description}</p>

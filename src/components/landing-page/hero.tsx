@@ -6,8 +6,8 @@ import { cn } from '@/lib/utils';
 
 const Hero = () => {
   return (
-    <div className='py-8 overflow-hidden mt-2'>
-      <h1 className='text-8xl font-bold leading-tight'>
+    <div className='py-8 xl:py-16 overflow-hidden mt-2'>
+      <h1 className='text-6xl md:text-8xl font-bold leading-tight'>
         Find your startup.
         <br />
         Meet your{' '}
@@ -15,21 +15,27 @@ const Hero = () => {
           partners.
         </span>
       </h1>
-      <h2 className='text-3xl font-light max-w-5xl mt-8'>
+      <h2 className='text-xl md:text-3xl font-light max-w-5xl mt-8'>
         Discover startups, find the right co-founders and team members, and turn
         your vision into a thriving business.
       </h2>
-      <div className='mt-12 space-x-3'>
+      <div className='flex flex-col items-start md:flex-row md:items-center gap-3 mt-12'>
         <Link
           href='/startups'
-          className={cn(buttonVariants({ size: 'xl' }), 'group')}
+          className={cn(
+            buttonVariants({ size: 'xl' }),
+            'group w-full md:w-auto'
+          )}
         >
           Get started now
           <ChevronRight className='group-hover:translate-x-1 transition-transform' />
         </Link>
         <Link
           href='/about-us'
-          className={cn(buttonVariants({ size: 'xl', variant: 'ghost' }))}
+          className={cn(
+            buttonVariants({ size: 'xl', variant: 'ghost' }),
+            'w-full md:w-auto'
+          )}
         >
           About us
         </Link>

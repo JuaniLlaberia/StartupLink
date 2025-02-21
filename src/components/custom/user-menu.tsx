@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {
+  BellDot,
   Bookmark,
   LayoutDashboard,
   LogOut,
@@ -40,6 +41,11 @@ const LINKS = [
     label: 'Saved',
     url: '/startups/saved',
     icon: Bookmark,
+  },
+  {
+    label: 'Notifications',
+    url: '/notifications',
+    icon: BellDot,
   },
 ];
 

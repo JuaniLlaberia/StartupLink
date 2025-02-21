@@ -122,7 +122,7 @@ const UserProfileForm = ({ user }: { user: User }) => {
         ) : (
           <div className='w-full h-32 rounded-lg bg-gradient-to-r from-purple-500 to-pink-300' />
         )}
-        <div className='absolute w-[calc(100%-4rem)] -bottom-14 left-8 flex items-end gap-6'>
+        <div className='absolute w-[calc(100%-4rem)] -bottom-14 left-2 md:left-8 flex items-end gap-6'>
           <Avatar className='size-24 border border-border shadow-lg'>
             <AvatarImage src={image ?? undefined} alt={name ?? 'Profile'} />
             <AvatarFallback className='text-lg'>
@@ -131,10 +131,10 @@ const UserProfileForm = ({ user }: { user: User }) => {
           </Avatar>
           <div className='w-full flex items-center justify-between'>
             <div>
-              <h1 className='text-xl font-semibold'>{name}</h1>
+              <h1 className='text-lg md:text-xl font-semibold'>{name}</h1>
               <p className='text-muted-foreground text-sm'>{email}</p>
             </div>
-            <div className='flex gap-4 ml-auto'>
+            <div className='gap-4 ml-auto hidden md:flex'>
               <Button size='sm' type='submit' disabled={isPending}>
                 {isPending && <Loader2 className='size-4 animate-spin' />}
                 Save changes
@@ -143,6 +143,10 @@ const UserProfileForm = ({ user }: { user: User }) => {
           </div>
         </div>
       </header>
+      <Button type='submit' disabled={isPending} className='w-full md:hidden'>
+        {isPending && <Loader2 className='size-4 animate-spin' />}
+        Save changes
+      </Button>
       <div>
         <div className='p-3 mt-3'>
           <p className='text-xs flex items-center text-muted-foreground'>

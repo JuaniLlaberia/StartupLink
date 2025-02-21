@@ -8,7 +8,7 @@ const ProfilePage = async () => {
   if (!user) redirect('/startups');
 
   return (
-    <section className='p-8'>
+    <section className='py-8 md:p-8'>
       <UserProfileForm user={user} />
     </section>
   );

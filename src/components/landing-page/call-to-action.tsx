@@ -13,10 +13,10 @@ const CallToAction = () => {
           <Infinity className='size-14 text-white' />
         </div>
         <div className='space-y-4 z-50'>
-          <h3 className='text-secondary text-5xl font-bold max-w-lg text-center'>
+          <h3 className='text-secondary text-3xl md:text-5xl font-bold max-w-lg text-center'>
             Your startup journey starts here
           </h3>
-          <h4 className='text-secondary/55 text-xl font-medium max-w-lg text-center'>
+          <h4 className='text-secondary/55 text-lg md:text-xl font-medium max-w-lg text-center'>
             Discover innovative startups, connect with the right people, and
             build the future together.
           </h4>

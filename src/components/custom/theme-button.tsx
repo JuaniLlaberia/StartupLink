@@ -17,7 +17,10 @@ const ThemeButton = () => {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
-        <PaintRoller className='size-4 mr-2' strokeWidth={1.5} />
+        <PaintRoller
+          className='size-4 mr-2 text-muted-foreground'
+          strokeWidth={1.5}
+        />
         Themes
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent className='flex flex-col gap-1 ml-2'>

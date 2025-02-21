@@ -26,7 +26,7 @@ export default function RootLayout({
         <NextTopLoader showSpinner={false} color='#8E51FF' />
         <Toaster richColors theme='light' />
         <ThemeProvider attribute='class' enableSystem disableTransitionOnChange>
-          <main className='p-4 px-6 md:px-16 lg:px-24 xl:px-36'>
+          <main className='p-4 px-4 md:px-16 lg:px-24 xl:px-36'>
             <ReactQueryProvider>
               <Navbar />
               <div className='min-h-[calc(100dvh-7rem)]'>{children}</div>

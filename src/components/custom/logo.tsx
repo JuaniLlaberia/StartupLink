@@ -7,7 +7,7 @@ const Logo = () => {
       <div className='bg-violet-500 p-1.5 rounded-lg text-white'>
         <Infinity className='size-6' strokeWidth={2.25} />
       </div>
-      <h1 className='font-bold text-xl'>StartupLink</h1>
+      <h1 className='font-bold text-xl hidden md:block'>StartupLink</h1>
     </Link>
   );
 };
