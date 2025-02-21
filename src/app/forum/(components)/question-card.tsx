@@ -65,7 +65,12 @@ const QuestionCard = ({
       <div className='space-y-3 w-full'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
-            <Badge variant='secondary'>{QUESTIONS_TYPE_LABELS[type]}</Badge>
+            <Badge
+              variant='secondary'
+              className='text-violet-500 bg-violet-200/60'
+            >
+              {QUESTIONS_TYPE_LABELS[type]}
+            </Badge>
             <p className='text-xs text-muted-foreground'>
               asked by <span className='font-medium'>{user.name}</span>
             </p>

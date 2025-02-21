@@ -31,7 +31,12 @@ const AnswerCard = ({ data, authUserId }: AnswerCardProps) => {
       <div className='space-y-4 w-full'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
-            <Badge variant='secondary'>Answer</Badge>
+            <Badge
+              variant='secondary'
+              className='text-violet-500 bg-violet-200/60'
+            >
+              Answer
+            </Badge>
             <p className='text-xs text-muted-foreground'>
               by <span className='font-medium'>{user.name}</span>
             </p>

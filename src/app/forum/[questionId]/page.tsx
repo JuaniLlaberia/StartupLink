@@ -20,7 +20,7 @@ const QuestionPage = async ({
   const { question, answers } = await getQuestionsWithAnswers({ questionId });
 
   return (
-    <section className='px-16 py-8 space-y-2.5'>
+    <section className='px-2 md:px-16 py-8 space-y-2.5'>
       <header className='flex items-center justify-between'>
         <Link
           href='/forum'
