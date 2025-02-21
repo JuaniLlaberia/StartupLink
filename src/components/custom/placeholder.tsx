@@ -15,7 +15,7 @@ const typeIcon: Record<PlaceholderType, typeof Building> = {
   question: HelpCircle,
 };
 
-const StartupsPlaceholder = ({
+const Placeholder = ({
   type,
   redirect,
 }: {
@@ -51,4 +51,4 @@ const StartupsPlaceholder = ({
   );
 };
 
-export default StartupsPlaceholder;
+export default Placeholder;
