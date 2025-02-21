@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { AlertCircle, CloudUpload, Loader2, Settings } from 'lucide-react';
+import { AlertCircle, Loader2, Settings } from 'lucide-react';
 import { Objective, User, WeeklyAvailability } from '@prisma/client';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import SettingsCard from './settings-card';
 import SkillsInput from './skills-input';
+import UploadImage from '../../../components/custom/upload-image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -107,8 +108,16 @@ const UserProfileForm = ({ user }: { user: User }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <header className='relative mb-20'>
         {coverImage ? (
-          <div className='w-full h-32 rounded-lg'>
-            <Image src={coverImage} alt='cover image' fill />
+          <div className='w-full h-32 rounded-lg overflow-hidden'>
+            <Image
+              src={coverImage}
+              alt='cover image'
+              fill
+              className='rounded-lg object-cover'
+              placeholder='blur'
+              blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0fHRsdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/2wBDAR0XFyAeIB4gHh4gIB4dHR0eHh0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAP/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='
+              loading='lazy'
+            />
           </div>
         ) : (
           <div className='w-full h-32 rounded-lg bg-gradient-to-r from-purple-500 to-pink-300' />
@@ -268,40 +277,14 @@ const UserProfileForm = ({ user }: { user: User }) => {
             title='Profile picture'
             description='Upload your profile picture.'
           >
-            <input id='profile-image' className='hidden' type='file' />
-            <label
-              htmlFor='profile-image'
-              className='bg-gray-100 rounded-lg w-full h-28 flex flex-col items-center justify-center gap-1'
-            >
-              <CloudUpload className='size-5 mb-1' />
-              <h3 className='text-sm font-medium'>
-                <span className='underline'>Click to upload</span> or drag and
-                drop
-              </h3>
-              <p className='text-xs text-muted-foreground'>
-                SVG, PNG, JPEG, JPG (max 5MB)
-              </p>
-            </label>
+            <UploadImage entityType='user' imageType='image' />
           </SettingsCard>
           {/* Cover image */}
           <SettingsCard
             title='Cover picture'
             description='Upload your cover picture.'
           >
-            <input id='cover-image' className='hidden' type='file' />
-            <label
-              htmlFor='cover-image'
-              className='bg-gray-100 rounded-lg w-full h-28 flex flex-col items-center justify-center gap-1'
-            >
-              <CloudUpload className='size-5 mb-1' />
-              <h3 className='text-sm font-medium'>
-                <span className='underline'>Click to upload</span> or drag and
-                drop
-              </h3>
-              <p className='text-xs text-muted-foreground'>
-                SVG, PNG, JPEG, JPG (max 5MB)
-              </p>
-            </label>
+            <UploadImage entityType='user' imageType='coverImage' />
           </SettingsCard>
           {/* Skills */}
           <SettingsCard
