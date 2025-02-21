@@ -14,7 +14,7 @@ type getQuestionsParams = {
 };
 
 export async function getQuestions({
-  sortBy,
+  sortBy = 'createdAt',
   searchTerm = '',
   type,
   edited,
@@ -41,9 +41,11 @@ export async function getQuestions({
       question: true,
       type: true,
       tags: true,
+      score: true,
       edited: true,
       createdAt: true,
-      user: { select: { name: true, image: true } },
+      createdBy: true,
+      user: { select: { name: true } },
     },
     orderBy: [{ [sortBy]: 'desc' }],
     skip: (page - 1) * pageSize,
