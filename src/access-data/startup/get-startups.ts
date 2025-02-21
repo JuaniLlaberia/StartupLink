@@ -3,6 +3,7 @@
 import { Industry, Prisma, Stage, TeamSize } from '@prisma/client';
 
 import { db } from '@/db';
+import { getUser } from '../user/get-auth-user';
 
 type SearchStartupsParams = {
   searchTerm?: string;
@@ -23,6 +24,9 @@ export async function searchStartups({
   page,
   pageSize,
 }: SearchStartupsParams) {
+  const user = await getUser();
+  const userId = user?.id;
+
   const conditions: Prisma.StartupWhereInput[] = [];
 
   if (searchTerm) {
@@ -66,11 +70,22 @@ export async function searchStartups({
       createdBy: true,
       createdAt: true,
       user: { select: { name: true } },
+      Upvote: userId
+        ? {
+            where: { userId },
+            select: { id: true },
+            take: 1,
+          }
+        : false,
     },
     orderBy: [{ verified: 'desc' }],
     skip: (page - 1) * pageSize,
     take: pageSize,
   });
 
-  return startups;
+  return startups.map(startup => ({
+    ...startup,
+    hasUserUpvoted: userId ? startup.Upvote.length > 0 : false,
+    Upvote: undefined,
+  }));
 }
