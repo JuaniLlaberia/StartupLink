@@ -57,18 +57,27 @@ enum QuestionType {
   DISCUSSION
 }
 
+enum WeeklyAvailability {
+  ZERO_TO_TEN
+  TEN_TO_TWENTY
+  TWENTY_TO_THIRTY
+  MORE_THAN_THIRTY
+}
+
 model User {
-  id          String    @id @default(cuid())
-  name        String?
-  email       String    @unique
-  description String?
-  position    String?
-  location    String?
-  objective   Objective @default(FIND_COFOUNDER)
-  image       String?
-  coverImage  String?
-  urls        String[]  @default([])
-  skills      String[]  @default([])
+  id                 String              @id @default(cuid())
+  name               String?
+  email              String              @unique
+  description        String?
+  position           String?
+  location           String?
+  weeklyAvailability WeeklyAvailability?
+  looking            Boolean             @default(true)
+  objective          Objective           @default(FIND_COFOUNDER)
+  image              String?
+  coverImage         String?
+  urls               String[]            @default([])
+  skills             String[]            @default([])
 
   Startup       Startup[]
   StartupMember StartupMember[]
