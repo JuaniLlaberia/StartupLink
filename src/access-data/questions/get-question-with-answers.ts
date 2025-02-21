@@ -35,6 +35,7 @@ export const getQuestionsWithAnswers = async ({
       user: { select: { name: true } },
       createdAt: true,
       createdBy: true,
+      questionId: true,
     },
   });
 
