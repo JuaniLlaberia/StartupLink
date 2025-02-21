@@ -20,7 +20,7 @@ const Placeholder = ({
   redirect,
 }: {
   type: PlaceholderType;
-  redirect: string;
+  redirect?: string;
 }) => {
   const pathname = usePathname();
   const IconComponent = typeIcon[type];
@@ -32,11 +32,15 @@ const Placeholder = ({
       </div>
       <h6 className='font-semibold'>No {type} found</h6>
       <p className='text-muted-foreground text-center max-w-[400px]'>
-        We did not find any {type} that matches your filters. You can{' '}
-        <Link href={redirect} className='underline'>
-          create your own {type}
-        </Link>
-        .
+        We did not find any {type} that matches your filters.
+        {redirect && (
+          <>
+            <span>You can </span>
+            <Link href={redirect} className='underline'>
+              create your own {type}.
+            </Link>
+          </>
+        )}
       </p>
       <Link
         href={pathname}
