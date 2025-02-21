@@ -1,13 +1,11 @@
 'server only';
 
-import { redirect } from 'next/navigation';
-
 import { auth } from '@/auth';
 import { db } from '@/db';
 
 export const getUser = async () => {
   const session = await auth();
-  if (!session || !session.user?.email) redirect('/');
+  if (!session || !session.user?.email) return null;
 
   const user = await db.user.findUnique({
     where: { email: session?.user?.email },
