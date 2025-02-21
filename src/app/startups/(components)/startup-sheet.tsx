@@ -1,7 +1,6 @@
 import Image from 'next/image';
-import { Bookmark } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import UpvoteButton from './upvote-button';
 import { Separator } from '@/components/ui/separator';
 import { SheetContent } from '@/components/ui/sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -32,13 +31,11 @@ const StartupSheet = ({ data }: StartupSheetProps) => {
           <AvatarImage src={data.image ?? undefined} />
           <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <Button
-          size='icon'
-          variant='outline'
+        <UpvoteButton
           className='absolute top-2 right-2'
-        >
-          <Bookmark className='size-4' />
-        </Button>
+          startupId={data.id}
+          hasUserUpvoted={data.hasUserUpvoted}
+        />
       </div>
 
       <div className='px-3'>
