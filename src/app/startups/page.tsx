@@ -59,6 +59,20 @@ const STARTUP_FILTERS = [
   },
 ];
 
+const STARTUP_SORTS = [
+  {
+    key: 'sortBy',
+    label: 'Sort startups by',
+    placeholder: 'Sort by',
+    values: [
+      { label: 'Popularity', value: 'upvotes' },
+      { label: 'Verified', value: 'verified' },
+      { label: 'Creation time', value: 'createdAt' },
+    ],
+    defaultValue: 'createdAt',
+  },
+];
+
 const StartupsPage = async ({
   searchParams,
 }: {
@@ -81,6 +95,7 @@ const StartupsPage = async ({
   } = await searchParams;
 
   const startups = await searchStartups({
+    sortBy: 'createdAt',
     searchTerm,
     industry,
     stage,
@@ -93,7 +108,7 @@ const StartupsPage = async ({
   return (
     <section className='grid md:grid-cols-[300px_1fr] gap-8 p-1 py-8'>
       <aside className='hidden md:block'>
-        <FiltersForm filters={STARTUP_FILTERS} />
+        <FiltersForm filters={STARTUP_FILTERS} sorts={STARTUP_SORTS} />
       </aside>
       <div className='min-h-[75dvh]'>
         <h1 className='text-sm font-semibold mb-3'>Startups</h1>

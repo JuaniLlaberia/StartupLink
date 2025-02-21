@@ -6,6 +6,7 @@ import { db } from '@/db';
 import { getUser } from '../user/get-auth-user';
 
 type SearchStartupsParams = {
+  sortBy: 'createdAt' | 'verified' | 'upvotes';
   searchTerm?: string;
   industry?: Industry;
   stage?: Stage;
@@ -16,6 +17,7 @@ type SearchStartupsParams = {
 };
 
 export async function searchStartups({
+  sortBy,
   searchTerm = '',
   industry,
   stage,
@@ -70,6 +72,9 @@ export async function searchStartups({
       createdBy: true,
       createdAt: true,
       user: { select: { name: true } },
+      _count: {
+        select: { Upvote: true },
+      },
       Upvote: userId
         ? {
             where: { userId },
@@ -78,7 +83,10 @@ export async function searchStartups({
           }
         : false,
     },
-    orderBy: [{ verified: 'desc' }],
+    orderBy:
+      sortBy === 'upvotes'
+        ? { Upvote: { _count: 'desc' } }
+        : { [sortBy]: 'desc' },
     skip: (page - 1) * pageSize,
     take: pageSize,
   });
@@ -87,5 +95,6 @@ export async function searchStartups({
     ...startup,
     hasUserUpvoted: userId ? startup.Upvote.length > 0 : false,
     Upvote: undefined,
+    _count: undefined,
   }));
 }
