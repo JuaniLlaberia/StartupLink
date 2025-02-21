@@ -1,8 +1,13 @@
 'use client';
 
 import Dropzone, { FileRejection } from 'react-dropzone';
-import { CloudUpload, Loader2, MousePointerSquareDashed } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import {
+  CheckCircle,
+  CloudUpload,
+  Loader2,
+  MousePointerSquareDashed,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { useUploadThing } from '@/lib/uploadthing';
@@ -24,13 +29,15 @@ const UploadImage = ({
 }: UploadImageProps) => {
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
 
   const { startUpload, isUploading } = useUploadThing('imageUploader', {
     onClientUploadComplete: res => {
       if (res?.[0]?.ufsUrl && onUploadComplete) {
         onUploadComplete(res[0].ufsUrl);
       }
-      startTransition(() => {});
+
+      setIsSuccessful(true);
     },
     onUploadProgress(p) {
       setUploadProgress(p);
@@ -51,7 +58,15 @@ const UploadImage = ({
     setIsDragOver(false);
   };
 
-  const [isPending, startTransition] = useTransition();
+  useEffect(() => {
+    if (isSuccessful) {
+      const timeout = setTimeout(() => {
+        setIsSuccessful(false);
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isSuccessful]);
 
   return (
     <Dropzone
@@ -75,8 +90,10 @@ const UploadImage = ({
           <input {...getInputProps()} />
           {isDragOver ? (
             <MousePointerSquareDashed className='size-5 mb-1' />
-          ) : isUploading || isPending ? (
+          ) : isUploading ? (
             <Loader2 className='animate-spin size-5 mb-1' />
+          ) : isSuccessful ? (
+            <CheckCircle className='size-5 mb-1' />
           ) : (
             <CloudUpload className='size-5 mb-1' />
           )}
@@ -94,6 +111,10 @@ const UploadImage = ({
                 <span className='font-semibold'>Drop file</span>
                 to upload
               </p>
+            ) : isSuccessful ? (
+              <p>
+                <span className='font-medium'>Image uploaded successfully</span>
+              </p>
             ) : (
               <p>
                 <span className='font-semibold underline'>Click to upload</span>{' '}
@@ -101,8 +122,7 @@ const UploadImage = ({
               </p>
             )}
           </div>
-
-          {isPending ? null : (
+          {!isSuccessful && (
             <p className='text-xs text-muted-foreground'>
               PNG, JPG, JPEG (max 4MB)
             </p>
