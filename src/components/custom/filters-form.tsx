@@ -15,7 +15,7 @@ import {
 } from '../ui/select';
 import { Label } from '../ui/label';
 
-type FilterValue = {
+type Value = {
   label: string;
   value: string;
 };
@@ -24,18 +24,29 @@ type Filter = {
   key: string;
   label: string;
   placeholder: string;
-  values: FilterValue[];
+  values: Value[];
+};
+
+type Sorts = {
+  key: string;
+  label: string;
+  placeholder: string;
+  values: Value[];
+  defaultValue: string;
 };
 
 type SelectedFilters = {
   [K in Filter['key']]?: string;
+} & {
+  [K in Sorts['key']]?: string;
 };
 
 type FiltersFormProps = {
   filters: Filter[];
+  sorts?: Sorts[];
 };
 
-const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
+const FiltersForm = ({ filters: FILTERS, sorts: SORTS }: FiltersFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -46,10 +57,17 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(
     () => {
-      return FILTERS.reduce((acc, filter) => {
+      const initialState = FILTERS.reduce((acc, filter) => {
         acc[filter.key] = searchParams.get(filter.key) || 'any';
         return acc;
       }, {} as SelectedFilters);
+
+      SORTS?.forEach(sort => {
+        initialState[sort.key] =
+          searchParams.get(sort.key) || sort.defaultValue;
+      });
+
+      return initialState;
     }
   );
 
@@ -59,7 +77,9 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
     const validFilters = Object.entries(selectedFilters).reduce<
       Record<string, string>
     >((acc, [key, value]) => {
-      if (value && value !== 'any') {
+      const isSort = SORTS?.some(sort => sort.key === key);
+
+      if (value && (isSort || value !== 'any')) {
         acc[key] = value;
       }
       return acc;
@@ -84,19 +104,28 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
   const handleResetFilters = () => {
     setIsResetting(true);
 
-    setSelectedFilters(
-      FILTERS.reduce((acc, filter) => {
-        acc[filter.key] = 'any';
-        return acc;
-      }, {} as SelectedFilters)
-    );
+    const resetState = FILTERS.reduce((acc, filter) => {
+      acc[filter.key] = 'any';
+      return acc;
+    }, {} as SelectedFilters);
+
+    SORTS?.forEach(sort => {
+      resetState[sort.key] = sort.defaultValue;
+    });
+
+    setSelectedFilters(resetState);
+
+    const paramsToRemove = [
+      ...FILTERS.map(filter => filter.key),
+      ...(SORTS?.map(sort => sort.key) || []),
+    ];
 
     if (!Array.from(searchParams.keys()).length) {
       setIsResetting(false);
       return;
     }
 
-    const queryString = removeParams(FILTERS.map(filter => filter.key));
+    const queryString = removeParams(paramsToRemove);
     router.push(`${pathname}${queryString}`);
   };
 
@@ -126,6 +155,31 @@ const FiltersForm = ({ filters: FILTERS }: FiltersFormProps) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value='any'>Any</SelectItem>
+                {values.map(val => (
+                  <SelectItem key={val.value} value={val.value}>
+                    {val.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </li>
+        ))}
+        {SORTS?.map(({ key, label, placeholder, values, defaultValue }) => (
+          <li key={label} className='mb-2 px-0.5'>
+            <Label>{label}</Label>
+            <Select
+              defaultValue={defaultValue}
+              value={selectedFilters[key] ? selectedFilters[key] : defaultValue}
+              onValueChange={val =>
+                setSelectedFilters(prev => {
+                  return { ...prev, [key]: val };
+                })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+              <SelectContent>
                 {values.map(val => (
                   <SelectItem key={val.value} value={val.value}>
                     {val.label}
