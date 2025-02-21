@@ -64,6 +64,12 @@ enum WeeklyAvailability {
   MORE_THAN_THIRTY
 }
 
+enum NotificationType {
+  STARTUP_INVITE
+  STARTUP_REQUEST
+  FORUM_ANSWER
+}
+
 model User {
   id                 String              @id @default(cuid())
   name               String?
@@ -83,6 +89,7 @@ model User {
   StartupMember StartupMember[]
   Question      Question[]
   Answer        Answer[]
+  Notification  Notification[]
 
   @@index([email])
 }
@@ -198,4 +205,16 @@ model Answer {
 
   user     User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  message    String
+  type       NotificationType
+  entityId   String?
+  isRead     Boolean          @default(false)
+  createdAt  DateTime         @default(now())
+  receiverId String
+
+  user User @relation(fields: [receiverId], references: [id], onDelete: Cascade)
 }
