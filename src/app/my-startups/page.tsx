@@ -1,6 +1,6 @@
 import SearcStartupshHeader from './(components)/search-header';
 import StartupDropdownActions from './(components)/startup-dropdown-actions';
-import StartupsPlaceholder from '../startups/(components)/startups-placeholder';
+import Placeholder from '../../components/custom/placeholder';
 import { getAllUserStartups } from '@/access-data/startup/get-all-user-startups';
 import { StartupHeader } from '../startups/(components)/startup-reusable';
 import { Separator } from '@/components/ui/separator';
@@ -59,7 +59,7 @@ const MyStartupsPage = async ({
             </li>
           ))
         ) : (
-          <StartupsPlaceholder type='startup' redirect='/startups/new' />
+          <Placeholder type='startup' redirect='/startups/new' />
         )}
       </ul>
     </section>

@@ -1,8 +1,8 @@
 import { Industry, Stage, TeamSize } from '@prisma/client';
 
 import FiltersForm from '@/components/custom/filters-form';
+import Placeholder from '../../components/custom/placeholder';
 import StartupCard from './(components)/startup-card';
-import StartupsPlaceholder from './(components)/startups-placeholder';
 import { searchStartups } from '@/access-data/startup/get-startups';
 import { TEAM_SIZE_LABELS } from '@/lib/labels';
 
@@ -99,7 +99,7 @@ const StartupsPage = async ({
               <StartupCard key={startup.id} data={startup} />
             ))
           ) : (
-            <StartupsPlaceholder type='startup' redirect='/startups/new' />
+            <Placeholder type='startup' redirect='/startups/new' />
           )}
         </ul>
       </div>
