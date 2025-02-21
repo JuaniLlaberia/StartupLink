@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { AlertCircle, CloudUpload, Loader2, Settings } from 'lucide-react';
-import { Objective, User } from '@prisma/client';
+import { Objective, User, WeeklyAvailability } from '@prisma/client';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
@@ -23,7 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { OBJECTIVE_LABELS } from '@/lib/labels';
+import {
+  OBJECTIVE_LABELS,
+  USERS_WEEKLY_AVAILABILITY_LABELS,
+} from '@/lib/labels';
+import { Switch } from '@/components/ui/switch';
 
 export type ProfileFormData = {
   name: string;
@@ -31,6 +35,8 @@ export type ProfileFormData = {
   description?: string;
   location?: string;
   objective?: Objective;
+  weeklyAvailability?: WeeklyAvailability;
+  looking: boolean;
   image?: string;
   coverImage?: string;
   skills: string[];
@@ -41,6 +47,8 @@ const UserProfileValidatorSchema = z.object({
   description: z.optional(z.string()),
   position: z.optional(z.string()),
   location: z.optional(z.string()),
+  weeklyAvailability: z.optional(z.nativeEnum(WeeklyAvailability)),
+  looking: z.boolean(),
   objective: z.optional(z.nativeEnum(Objective)),
   skills: z.array(z.string()),
 });
@@ -52,6 +60,8 @@ const UserProfileForm = ({ user }: { user: User }) => {
     image,
     coverImage,
     description,
+    weeklyAvailability,
+    looking,
     position,
     skills,
     location,
@@ -70,6 +80,8 @@ const UserProfileForm = ({ user }: { user: User }) => {
       description: description ?? undefined,
       position: position ?? undefined,
       location: location ?? undefined,
+      weeklyAvailability: weeklyAvailability ?? undefined,
+      looking: looking ?? false,
       objective: objective ?? undefined,
       skills: skills?.map(skill => String(skill)) ?? [],
     },
@@ -205,6 +217,49 @@ const UserProfileForm = ({ user }: { user: User }) => {
                     ))}
                   </SelectContent>
                 </Select>
+              )}
+            />
+          </SettingsCard>
+          {/* Weekly Availability */}
+          <SettingsCard
+            title='Weekly availabily'
+            description='This represent the aproximate amount of hours you can spend working on a startup'
+          >
+            <Controller
+              control={control}
+              name='weeklyAvailability'
+              render={({ field }) => (
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value ?? ''}
+                  defaultValue={field.value ?? ''}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select your availability' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(USERS_WEEKLY_AVAILABILITY_LABELS).map(
+                      ([key, label]) => (
+                        <SelectItem key={key} value={key}>
+                          {label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </SettingsCard>
+          {/* Looking */}
+          <SettingsCard
+            title='Are you looking for startups?'
+            description='This tells the other users/startups if you seek to join a startup'
+          >
+            <Controller
+              control={control}
+              name='looking'
+              render={({ field: { value, onChange, ...field } }) => (
+                <Switch checked={value} onCheckedChange={onChange} {...field} />
               )}
             />
           </SettingsCard>
