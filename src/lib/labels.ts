@@ -41,3 +41,10 @@ export const OBJECTIVE_LABELS: Record<string, string> = {
   HIRING: "I have a startup and I'm looking for team members.",
   NETWORKING: "I'm looking to network and collaborate with startup founders.",
 };
+
+export const QUESTIONS_TYPE_LABELS: Record<string, string> = {
+  QUESTION: 'Question',
+  ADVICE: 'Advice',
+  SHOWCASE: 'Showcase',
+  DISCUSSION: 'Discussion',
+};
