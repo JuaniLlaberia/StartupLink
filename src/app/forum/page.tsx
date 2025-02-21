@@ -8,6 +8,8 @@ import QuestionCard from './(components)/question-card';
 import QuestionForm from './(components)/question-form';
 import { Button } from '@/components/ui/button';
 import { getAuthUser } from '@/actions/auth';
+import Pagination from '@/components/custom/pagination';
+import { INITIAL_PAGE_SIZE } from '@/lib/consts';
 
 const QUESTIONS_FILTERS = [
   {
@@ -57,18 +59,19 @@ const ForumPage = async ({
     type: QuestionType;
     edited: string;
     sortBy: 'createdAt' | 'score' | 'question';
+    page: number;
   }>;
 }) => {
   const userId = await getAuthUser();
-  const { search: searchTerm, type, edited, sortBy } = await searchParams;
+  const { search: searchTerm, type, edited, sortBy, page } = await searchParams;
 
   const questions = await getQuestions({
     sortBy,
     searchTerm,
     type,
     edited,
-    page: 1,
-    pageSize: 10,
+    page: page || 1,
+    pageSize: INITIAL_PAGE_SIZE,
   });
 
   return (
@@ -103,9 +106,12 @@ const ForumPage = async ({
               />
             ))
           ) : (
-            <Placeholder type='question' redirect='/forum/new-question' />
+            <Placeholder type='question' />
           )}
         </ul>
+        <Pagination
+          totalPages={Math.ceil(questions.length / INITIAL_PAGE_SIZE)}
+        />
       </div>
     </section>
   );

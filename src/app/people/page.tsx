@@ -5,6 +5,8 @@ import Placeholder from '@/components/custom/placeholder';
 import UserCard from './(components)/user-card';
 import { getUsers } from '@/access-data/user/get-users';
 import { USERS_WEEKLY_AVAILABILITY_LABELS } from '@/lib/labels';
+import Pagination from '@/components/custom/pagination';
+import { INITIAL_PAGE_SIZE } from '@/lib/consts';
 
 const PEOPLE_FILTERS = [
   {
@@ -51,6 +53,7 @@ const PeoplePage = async ({
     objective: Objective;
     weeklyAvailability: WeeklyAvailability;
     looking: string;
+    page: number;
   }>;
 }) => {
   const {
@@ -58,6 +61,7 @@ const PeoplePage = async ({
     objective,
     weeklyAvailability,
     looking,
+    page,
   } = await searchParams;
 
   const users = await getUsers({
@@ -65,8 +69,8 @@ const PeoplePage = async ({
     objective,
     weeklyAvailability,
     looking,
-    page: 1,
-    pageSize: 10,
+    page: page || 1,
+    pageSize: INITIAL_PAGE_SIZE,
   });
 
   return (
@@ -83,6 +87,7 @@ const PeoplePage = async ({
             <Placeholder type='people' />
           )}
         </ul>
+        <Pagination totalPages={Math.ceil(users.length / INITIAL_PAGE_SIZE)} />
       </div>
     </section>
   );

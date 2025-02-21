@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+
 import SearcStartupshHeader from './(components)/search-header';
 import StartupDropdownActions from './(components)/startup-dropdown-actions';
 import Placeholder from '../../components/custom/placeholder';
@@ -7,6 +9,9 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { formatRelativeDate } from '@/lib/helpers/format-relative-date';
 import { STAGE_LABELS } from '@/lib/labels';
+import { auth } from '@/auth';
+import Pagination from '@/components/custom/pagination';
+import { INITIAL_PAGE_SIZE } from '@/lib/consts';
 
 const MyStartupsPage = async ({
   searchParams,
@@ -14,18 +19,22 @@ const MyStartupsPage = async ({
   searchParams: Promise<{
     search: string;
     sortBy: 'name' | 'creation';
+    page: number;
   }>;
 }) => {
-  const { search, sortBy } = await searchParams;
+  const session = await auth();
+  if (!session) redirect('/');
+
+  const { search, sortBy, page } = await searchParams;
   const startups = await getAllUserStartups({
     searchTerm: search,
     sortBy,
-    page: 1,
-    pageSize: 10,
+    page: page || 1,
+    pageSize: INITIAL_PAGE_SIZE,
   });
 
   return (
-    <section className='p-1 py-8 space-y-5'>
+    <section className='px-2 md:px-16 py-8 space-y-5'>
       <SearcStartupshHeader />
       <ul className='grid lg:grid-cols-2 xl:grid-cols-3 gap-2.5'>
         {startups.length > 0 ? (
@@ -62,6 +71,7 @@ const MyStartupsPage = async ({
           <Placeholder type='startup' redirect='/startups/new' />
         )}
       </ul>
+      <Pagination totalPages={Math.ceil(startups.length / INITIAL_PAGE_SIZE)} />
     </section>
   );
 };

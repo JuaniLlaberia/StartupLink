@@ -1,10 +1,12 @@
 import { Industry, Stage, TeamSize } from '@prisma/client';
 
 import FiltersForm from '@/components/custom/filters-form';
+import Pagination from '@/components/custom/pagination';
 import Placeholder from '../../components/custom/placeholder';
 import StartupCard from './(components)/startup-card';
 import { searchStartups } from '@/access-data/startup/get-startups';
 import { TEAM_SIZE_LABELS } from '@/lib/labels';
+import { INITIAL_PAGE_SIZE } from '@/lib/consts';
 
 const STARTUP_FILTERS = [
   {
@@ -66,6 +68,7 @@ const StartupsPage = async ({
     stage: Stage;
     teamSize: TeamSize;
     verified: string;
+    page: number;
   }>;
 }) => {
   const {
@@ -74,6 +77,7 @@ const StartupsPage = async ({
     stage,
     teamSize,
     verified,
+    page,
   } = await searchParams;
 
   const startups = await searchStartups({
@@ -82,8 +86,8 @@ const StartupsPage = async ({
     stage,
     teamSize,
     verified,
-    page: 1,
-    pageSize: 10,
+    page: page || 1,
+    pageSize: INITIAL_PAGE_SIZE,
   });
 
   return (
@@ -102,6 +106,9 @@ const StartupsPage = async ({
             <Placeholder type='startup' redirect='/startups/new' />
           )}
         </ul>
+        <Pagination
+          totalPages={Math.ceil(startups.length / INITIAL_PAGE_SIZE)}
+        />
       </div>
     </section>
   );
