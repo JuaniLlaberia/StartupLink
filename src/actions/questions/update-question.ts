@@ -1,4 +1,8 @@
+'use server';
+
 import { z } from 'zod';
+import { QuestionType } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 import { db } from '@/db';
 import { authenticatedAction } from '@/lib/safe-actions';
@@ -7,6 +11,7 @@ const updateQuestionValidator = z.object({
   id: z.string(),
   question: z.optional(z.string()),
   tags: z.array(z.string()),
+  type: z.nativeEnum(QuestionType),
 });
 
 export const updateQuestion = authenticatedAction
@@ -20,8 +25,12 @@ export const updateQuestion = authenticatedAction
     if (questionDb?.createdBy !== userId)
       throw new Error('You have no permission to perform this action');
 
-    await db.question.update({
+    const { id: questionId } = await db.question.update({
       where: { id },
       data: { question, tags, edited: true },
     });
+
+    revalidatePath(`/forum/${questionId}`);
+
+    return questionId;
   });
