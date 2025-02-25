@@ -8,15 +8,9 @@ import { isStartupMember } from '../helper';
 
 type getRolesProps = {
   startupId: string;
-  page: number;
-  pageSize: number;
 };
 
-export const getRoles = async ({
-  startupId,
-  page,
-  pageSize,
-}: getRolesProps) => {
+export const getRoles = async ({ startupId }: getRolesProps) => {
   const userId = await getAuthUser();
 
   const isMember = await isStartupMember(startupId, userId);
@@ -24,8 +18,6 @@ export const getRoles = async ({
 
   const roles = await db.startupRole.findMany({
     where: { startupId },
-    skip: (page - 1) * pageSize,
-    take: pageSize,
     orderBy: { createdAt: 'desc' },
   });
 
