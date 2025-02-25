@@ -16,29 +16,58 @@ const createStartupValidator = z.object({
   image: z.optional(z.string()),
 });
 
+const createSlugFromName = (name: string) => {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return slug;
+};
+
 export const createStartup = authenticatedAction
   .createServerAction()
   .input(createStartupValidator)
   .handler(async ({ input, ctx: { userId } }) => {
+    const slug = createSlugFromName(input.name);
+
     const { id: startupId } = await db.startup.create({
-      data: { ...input, createdBy: userId },
+      data: { ...input, slug, createdBy: userId },
     });
 
     const { id: roleId } = await db.startupRole.create({
       data: {
         name: 'Founder',
+        description:
+          'Default role created for the founder on startup creation.',
         admin: true,
+        active: false,
+        requiresSurvey: false,
         startupId,
       },
     });
 
-    await db.startupMember.create({
-      data: {
-        startupId,
-        userId,
-        roleId,
-      },
-    });
+    await Promise.all([
+      db.startupDesignConfig.create({
+        data: {
+          startupId,
+          mainBackground: '#ffffff',
+          secondaryBackground: '#f0f0f0',
+          mainText: '#111827',
+          secondaryText: '#868b94ca',
+          borderRadius: 8,
+        },
+      }),
+      db.startupMember.create({
+        data: {
+          startupId,
+          userId,
+          roleId,
+        },
+      }),
+    ]);
 
     return startupId;
   });
