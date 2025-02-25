@@ -97,6 +97,7 @@ model User {
 model Startup {
   id         String   @id @default(cuid())
   name       String
+  slug       String   @unique
   mission    String
   location   String?
   verified   Boolean  @default(false)
@@ -111,11 +112,13 @@ model Startup {
 
   user User @relation(fields: [createdBy], references: [id])
 
-  StartupMember StartupMember[]
-  StartupRole   StartupRole[]
-  Milestone     Milestone[]
-  Upvote        Upvote[]
+  StartupMember       StartupMember[]
+  StartupRole         StartupRole[]
+  Milestone           Milestone[]
+  Upvote              Upvote[]
+  StartupDesignConfig StartupDesignConfig[]
 
+  @@index([slug])
   @@index([createdBy])
   @@index([industry])
   @@index([teamSize, industry, stage, verified])
@@ -144,12 +147,30 @@ model Upvote {
   @@unique([userId, startupId])
 }
 
+model StartupDesignConfig {
+  id                  String @id @default(cuid())
+  mainBackground      String
+  secondaryBackground String
+  mainText            String
+  secondaryText       String
+  borderRadius        Int
+  startupId           String
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@index([startupId])
+}
+
 model StartupRole {
-  id        String   @id @default(cuid())
-  name      String
-  admin     Boolean  @default(false)
-  startupId String
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  active         Boolean  @default(true)
+  admin          Boolean  @default(false)
+  requiresSurvey Boolean  @default(false)
+  surveyId       String?
+  startupId      String
+  createdAt      DateTime @default(now())
 
   startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
 
