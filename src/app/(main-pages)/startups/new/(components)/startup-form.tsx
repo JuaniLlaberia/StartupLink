@@ -127,7 +127,8 @@ const StartupForm = () => {
         router.push('/my-startups');
         toast.success('Startup created successfully');
       },
-      onError: () => {
+      onError: err => {
+        console.log(err);
         toast.error('Failed to create startup');
       },
     }

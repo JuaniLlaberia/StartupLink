@@ -106,8 +106,9 @@ const AnswerForm = ({ data, trigger, onSuccess }: AnswerFormProps) => {
         </DialogHeader>
         <form onSubmit={handleOnSubmit} className='space-y-2'>
           <div>
-            <Label>Your answer</Label>
+            <Label htmlFor='answer'>Your answer</Label>
             <Textarea
+              id='answer'
               rows={5}
               className='resize-none'
               disabled={isLoading}

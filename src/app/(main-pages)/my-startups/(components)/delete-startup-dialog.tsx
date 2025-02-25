@@ -2,7 +2,7 @@
 
 import { useState, type ReactElement } from 'react';
 import { toast } from 'sonner';
-import { Loader2, LogOut } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
 
 import {
   Dialog,
@@ -17,68 +17,80 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { useServerActionMutation } from '@/hooks/use-server-action';
-import { leaveStartup as leaveStartupAction } from '@/actions/startup/leave-startup';
+import { deleteStartup as deleteStartupAction } from '@/actions/startup/delete-startup';
+import { useRouter } from 'next/navigation';
 
-type LeaveStartupDialogProps = {
+type DeleteStartupDialogProps = {
   startupId: string;
-  startupName: string;
+  startupName?: string;
   trigger?: ReactElement;
   onSuccess?: () => void;
 };
 
-const LeaveStartupDialog = ({
+const DeleteStartupDialog = ({
   startupId,
   startupName,
   trigger,
   onSuccess,
-}: LeaveStartupDialogProps) => {
+}: DeleteStartupDialogProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { mutate: leaveStartup } = useServerActionMutation(leaveStartupAction, {
-    mutationKey: ['leave-startup'],
-    onSuccess: () => {
-      onSuccess?.();
-      setIsOpen(false);
-    },
-    onError: err => {
-      console.log(err);
-      toast.error('Failed to leave startup');
-    },
-    onSettled: () => setIsLoading(false),
-  });
+  const { mutate: deleteStartup } = useServerActionMutation(
+    deleteStartupAction,
+    {
+      mutationKey: ['delete-startup'],
+      onSuccess: () => {
+        onSuccess?.();
+        router.push('/my-startups');
+        toast.success('Startup deleted successfully');
+        setIsOpen(false);
+      },
+      onError: () => toast.error('Failed to delete startup'),
+      onSettled: () => setIsLoading(false),
+    }
+  );
 
-  const handleleaveStartup = async () => {
+  const handleDeleteStartup = async () => {
     setIsLoading(true);
-    leaveStartup({ id: startupId });
+    deleteStartup({ id: startupId });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {trigger || <Button size='sm'>Leave Startup</Button>}
+        {trigger || <Button size='sm'>Delete Startup</Button>}
       </DialogTrigger>
       <DialogContent withCloseButton={false} className='max-w-md space-y-6 p-4'>
         <DialogHeader className='flex flex-col items-center gap-2'>
-          <LogOut className='text-red-400 size-7' />
+          <AlertCircle className='text-red-400 size-7' />
           <div className='text-center space-y-2'>
-            <DialogTitle className='text-base'>Leave this startup?</DialogTitle>
+            <DialogTitle className='text-base'>
+              Delete this startup?
+            </DialogTitle>
             <DialogDescription className='text-center max-w-sm'>
-              You are about to leave{' '}
-              <span className='font-medium'>{startupName}</span> startup.{' '}
-              <span className='font-medium'>
-                You can join back if accepted by founders
+              You are about to delete{' '}
+              {startupName ? (
+                <span className='font-medium'>{startupName}</span>
+              ) : (
+                'this'
+              )}{' '}
+              startup. All data related to this startup will be deleted.{' '}
+              <span className='text-red-500 font-medium'>
+                This action is irreversible.
               </span>
             </DialogDescription>
           </div>
         </DialogHeader>
+
         <DialogFooter>
           <div className='w-full flex flex-col items-center gap-2'>
             <Button
               disabled={isLoading}
               size='sm'
               variant='destructive'
-              onClick={handleleaveStartup}
+              onClick={handleDeleteStartup}
               className='w-full'
             >
               {isLoading && <Loader2 className='size-4 animate-spin' />}
@@ -101,4 +113,4 @@ const LeaveStartupDialog = ({
   );
 };
 
-export default LeaveStartupDialog;
+export default DeleteStartupDialog;

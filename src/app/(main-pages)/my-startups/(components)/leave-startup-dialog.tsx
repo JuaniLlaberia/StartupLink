@@ -2,7 +2,7 @@
 
 import { useState, type ReactElement } from 'react';
 import { toast } from 'sonner';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { Loader2, LogOut } from 'lucide-react';
 
 import {
   Dialog,
@@ -17,73 +17,73 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { useServerActionMutation } from '@/hooks/use-server-action';
-import { deleteStartup as deleteStartupAction } from '@/actions/startup/delete-startup';
+import { leaveStartup as leaveStartupAction } from '@/actions/startup/leave-startup';
 
-type DeleteStartupDialogProps = {
+type LeaveStartupDialogProps = {
   startupId: string;
-  startupName: string;
+  startupName?: string;
   trigger?: ReactElement;
   onSuccess?: () => void;
 };
 
-const DeleteStartupDialog = ({
+const LeaveStartupDialog = ({
   startupId,
   startupName,
   trigger,
   onSuccess,
-}: DeleteStartupDialogProps) => {
+}: LeaveStartupDialogProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { mutate: deleteStartup } = useServerActionMutation(
-    deleteStartupAction,
-    {
-      mutationKey: ['delete-startup'],
-      onSuccess: () => {
-        onSuccess?.();
-        toast.success('Startup deleted successfully');
-        setIsOpen(false);
-      },
-      onError: () => toast.error('Failed to delete startup'),
-      onSettled: () => setIsLoading(false),
-    }
-  );
+  const { mutate: leaveStartup } = useServerActionMutation(leaveStartupAction, {
+    mutationKey: ['leave-startup'],
+    onSuccess: () => {
+      onSuccess?.();
+      setIsOpen(false);
+    },
+    onError: err => {
+      console.log(err);
+      toast.error('Failed to leave startup');
+    },
+    onSettled: () => setIsLoading(false),
+  });
 
-  const handleDeleteStartup = async () => {
+  const handleleaveStartup = async () => {
     setIsLoading(true);
-    deleteStartup({ id: startupId });
+    leaveStartup({ id: startupId });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {trigger || <Button size='sm'>Delete Startup</Button>}
+        {trigger || <Button size='sm'>Leave Startup</Button>}
       </DialogTrigger>
       <DialogContent withCloseButton={false} className='max-w-md space-y-6 p-4'>
         <DialogHeader className='flex flex-col items-center gap-2'>
-          <AlertCircle className='text-red-400 size-7' />
+          <LogOut className='text-red-400 size-7' />
           <div className='text-center space-y-2'>
-            <DialogTitle className='text-base'>
-              Delete this startup?
-            </DialogTitle>
+            <DialogTitle className='text-base'>Leave this startup?</DialogTitle>
             <DialogDescription className='text-center max-w-sm'>
-              You are about to delete{' '}
-              <span className='font-medium'>{startupName}</span> startup. All
-              data related to this startup will be deleted.{' '}
-              <span className='text-red-500 font-medium'>
-                This action is irreversible.
+              You are about to leave{' '}
+              {startupName ? (
+                <span className='font-medium'>{startupName}</span>
+              ) : (
+                'this'
+              )}{' '}
+              startup.{' '}
+              <span className='font-medium'>
+                You can join back if accepted by founders
               </span>
             </DialogDescription>
           </div>
         </DialogHeader>
-
         <DialogFooter>
           <div className='w-full flex flex-col items-center gap-2'>
             <Button
               disabled={isLoading}
               size='sm'
               variant='destructive'
-              onClick={handleDeleteStartup}
+              onClick={handleleaveStartup}
               className='w-full'
             >
               {isLoading && <Loader2 className='size-4 animate-spin' />}
@@ -106,4 +106,4 @@ const DeleteStartupDialog = ({
   );
 };
 
-export default DeleteStartupDialog;
+export default LeaveStartupDialog;

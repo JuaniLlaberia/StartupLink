@@ -125,8 +125,9 @@ const QuestionForm = ({ data, trigger, onSuccess }: QuestionFormProps) => {
         </DialogHeader>
         <form onSubmit={handleOnSubmit} className='space-y-2'>
           <div>
-            <Label>Question</Label>
+            <Label htmlFor='question'>Question</Label>
             <Input
+              id='question'
               disabled={isLoading}
               placeholder='Your question...'
               type='text'
