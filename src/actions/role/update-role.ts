@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
@@ -23,4 +24,6 @@ export const updateRole = authenticatedAction
       where: { id },
       data: { ...data },
     });
+
+    revalidatePath(`/dashboard/${startupId}/roles`);
   });
