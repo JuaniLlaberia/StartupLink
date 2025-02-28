@@ -1,5 +1,5 @@
 import { StartupRole } from '@prisma/client';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import { Edit, Plus, Tag, Trash2 } from 'lucide-react';
 
 import DeleteRoleDialog from './delete-role-dialog';
 import RoleForm from './role-form';
@@ -82,8 +82,22 @@ const RolesList = ({
           />
         </>
       ) : (
-        <div className='p-1'>
-          <p className='text-sm text-muted-foreground'>No roles</p>
+        <div className='flex flex-col col-span-full gap-2 justify-center items-center py-10 lg:py-20 px-2'>
+          <div className='border border-border rounded-xl p-3'>
+            <Tag className='size-6' />
+          </div>
+          <h6 className='font-semibold'>No surveys found</h6>
+          <p className='text-muted-foreground text-center max-w-[400px]'>
+            You can start by creating one and assign it to a role.
+          </p>
+          <RoleForm
+            startupId={startupId}
+            trigger={
+              <Button size='sm' className='mt-4'>
+                <Plus /> Add new role
+              </Button>
+            }
+          />
         </div>
       )}
     </>
