@@ -117,6 +117,7 @@ model Startup {
   Milestone           Milestone[]
   Upvote              Upvote[]
   StartupDesignConfig StartupDesignConfig[]
+  Survey              Survey[]
 
   @@index([slug])
   @@index([createdBy])
@@ -238,4 +239,18 @@ model Notification {
   receiverId String
 
   user User @relation(fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model Survey {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  active      Boolean  @default(true)
+  questions   Json
+  createdAt   DateTime @default(now())
+  startupId   String
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@index([startupId])
 }
