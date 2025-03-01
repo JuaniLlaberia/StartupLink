@@ -10,6 +10,7 @@ import {
   type StartupData,
 } from './startup-reusable';
 import UpvoteButton from './upvote-button';
+import { Badge } from '@/components/ui/badge';
 
 export type StartupCardProps = {
   data: StartupData;
@@ -32,6 +33,14 @@ const StartupCard = ({ data }: StartupCardProps) => {
               <p className='text-xs text-muted-foreground'>
                 Looking for people
               </p>
+            )}
+            {data.openRoles && (
+              <Badge
+                variant='secondary'
+                className='bg-violet-200/60 text-violet-500 py-1.5 px-3'
+              >
+                {data.openRoles} Open roles
+              </Badge>
             )}
             <Button size='sm' className='group'>
               View startup

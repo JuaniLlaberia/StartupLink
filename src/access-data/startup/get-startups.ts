@@ -74,7 +74,7 @@ export async function searchStartups({
       createdAt: true,
       user: { select: { name: true } },
       _count: {
-        select: { Upvote: true },
+        select: { Upvote: true, StartupRole: { where: { active: true } } },
       },
       Upvote: userId
         ? {
@@ -95,6 +95,7 @@ export async function searchStartups({
   return startups.map(startup => ({
     ...startup,
     hasUserUpvoted: userId ? startup.Upvote.length > 0 : false,
+    openRoles: startup._count.StartupRole,
     Upvote: undefined,
     _count: undefined,
   }));
