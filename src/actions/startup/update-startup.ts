@@ -16,6 +16,7 @@ const updateStartupValidator = z.object({
   location: z.optional(z.string()),
   stage: z.nativeEnum(Stage),
   industry: z.nativeEnum(Industry),
+  looking: z.boolean(),
   teamSize: z.optional(z.nativeEnum(TeamSize)),
   image: z.optional(z.string()),
   coverImage: z.optional(z.string()),

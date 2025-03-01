@@ -25,6 +25,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useServerActionMutation } from '@/hooks/use-server-action';
 import { INDUSTRY_LABELS, STAGE_LABELS, TEAM_SIZE_LABELS } from '@/lib/labels';
+import { Switch } from '@/components/ui/switch';
 
 type StartupProfileFormProps = {
   startup: Startup;
@@ -37,6 +38,7 @@ export type StartupFormData = {
   stage: Stage;
   industry: Industry;
   teamSize: TeamSize;
+  looking: boolean;
   image?: string;
   coverImage?: string;
   skills: string[];
@@ -49,6 +51,7 @@ const StartupProfileValidatorSchema = z.object({
   mission: z.string().min(25, 'Mission should be at least 25 characters'),
   industry: z.nativeEnum(Industry, { message: 'Industry is required' }),
   stage: z.nativeEnum(Stage, { message: 'Stage is required' }),
+  looking: z.boolean(),
   teamSize: z.nativeEnum(TeamSize, { message: 'Team size is required' }),
   location: z.optional(z.string()),
   skills: z.array(z.string()),
@@ -66,6 +69,7 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
     verified,
     teamSize,
     stage,
+    looking,
     location,
     slug,
   } = startup;
@@ -83,6 +87,7 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
       mission,
       stage,
       location: location ?? undefined,
+      looking,
       industry,
       teamSize,
       skills: skills?.map(skill => String(skill)) ?? [],
@@ -95,10 +100,7 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
       mutationKey: ['update-startup'],
       onSuccess: () =>
         toast.success('Startup information updated successfully'),
-      onError: err => {
-        console.log(err);
-        toast.error('Failed to update startup information');
-      },
+      onError: () => toast.error('Failed to update startup information'),
     }
   );
 
@@ -305,6 +307,19 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
                     ))}
                   </SelectContent>
                 </Select>
+              )}
+            />
+          </SettingsCard>
+          {/* Looking for members */}
+          <SettingsCard
+            title='Are you looking for members?'
+            description='This tells the other users/startups if you are looking for new members to join your startup.'
+          >
+            <Controller
+              control={control}
+              name='looking'
+              render={({ field: { value, onChange, ...field } }) => (
+                <Switch checked={value} onCheckedChange={onChange} {...field} />
               )}
             />
           </SettingsCard>

@@ -28,7 +28,11 @@ const StartupCard = ({ data }: StartupCardProps) => {
             <StartupSkills skills={data.skills} />
           </div>
           <div className='flex items-center justify-end gap-3'>
-            <p className='text-xs text-muted-foreground'>Looking for people</p>
+            {data.looking && (
+              <p className='text-xs text-muted-foreground'>
+                Looking for people
+              </p>
+            )}
             <Button size='sm' className='group'>
               View startup
               <ChevronRight className='size-4 group-hover:translate-x-0.5 transition-transform' />
