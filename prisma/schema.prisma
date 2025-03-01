@@ -101,6 +101,7 @@ model Startup {
   mission    String
   location   String?
   verified   Boolean  @default(false)
+  looking    Boolean  @default(true)
   stage      Stage
   industry   Industry
   teamSize   TeamSize
