@@ -273,6 +273,7 @@ model Event {
   streamingLink String? // For external URL's (Twitch, zoom, google meet)
   embedCode     String? // For Youtube -> Embed HTML
   startupId     String
+  createdAt     DateTime        @default(now())
 
   startup       Startup         @relation(fields: [startupId], references: [id], onDelete: Cascade)
   EventAttendee EventAttendee[]
