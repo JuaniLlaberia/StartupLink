@@ -14,6 +14,7 @@ const updateStartupValidator = z.object({
   slug: z.optional(z.string()),
   mission: z.optional(z.string()),
   location: z.optional(z.string()),
+  website: z.optional(z.string()),
   stage: z.nativeEnum(Stage),
   industry: z.nativeEnum(Industry),
   looking: z.boolean(),

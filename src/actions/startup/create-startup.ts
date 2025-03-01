@@ -10,6 +10,7 @@ const createStartupValidator = z.object({
   name: z.string().min(1, 'Must provide a startup name'),
   mission: z.string().min(25, 'Startup mission must be at least 25 char.'),
   location: z.optional(z.string()),
+  website: z.optional(z.string()),
   stage: z.nativeEnum(Stage),
   industry: z.nativeEnum(Industry),
   teamSize: z.nativeEnum(TeamSize),

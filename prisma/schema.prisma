@@ -113,6 +113,7 @@ model Startup {
   teamSize   TeamSize
   image      String?
   coverImage String?
+  website    String?
   skills     String[] @default([])
   createdBy  String
   createdAt  DateTime @default(now())

@@ -43,6 +43,7 @@ export type StartupFormData = {
   coverImage?: string;
   skills: string[];
   location?: string;
+  website?: string;
 };
 
 const StartupProfileValidatorSchema = z.object({
@@ -55,6 +56,7 @@ const StartupProfileValidatorSchema = z.object({
   teamSize: z.nativeEnum(TeamSize, { message: 'Team size is required' }),
   location: z.optional(z.string()),
   skills: z.array(z.string()),
+  website: z.optional(z.string()),
 });
 
 const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
@@ -69,6 +71,7 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
     verified,
     teamSize,
     stage,
+    website,
     looking,
     location,
     slug,
@@ -90,6 +93,7 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
       looking,
       industry,
       teamSize,
+      website: website ?? undefined,
       skills: skills?.map(skill => String(skill)) ?? [],
     },
   });
@@ -223,6 +227,17 @@ const StartupProfileForm = ({ startup }: StartupProfileFormProps) => {
             <Input
               placeholder='Your location'
               {...register('location')}
+              disabled={isPending}
+            />
+          </SettingsCard>
+          {/* Website */}
+          <SettingsCard
+            title='Your website'
+            description='Users will be able to visit your application if you have one'
+          >
+            <Input
+              placeholder='Your website'
+              {...register('website')}
               disabled={isPending}
             />
           </SettingsCard>
