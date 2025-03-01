@@ -33,6 +33,10 @@ export const getStartupBySlug = async ({
       Upvote: {
         select: { id: true },
       },
+      StartupRole: {
+        where: { active: true },
+        select: { id: true, name: true, description: true },
+      },
     },
   });
 
@@ -50,9 +54,11 @@ export const getStartupBySlug = async ({
       role: member.role.name,
     })),
     designConfig: startup.StartupDesignConfig[0] || null,
+    roles: startup.StartupRole,
     StartupMember: undefined,
     Upvote: undefined,
     StartupDesignConfig: undefined,
+    StartupRole: undefined,
   };
 
   return formattedStartup;

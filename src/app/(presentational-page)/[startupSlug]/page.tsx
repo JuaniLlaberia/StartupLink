@@ -3,7 +3,8 @@ import Link from 'next/link';
 import {
   Atom,
   Building,
-  Code,
+  ChevronRight,
+  Code2,
   ExternalLink,
   Globe,
   MapPin,
@@ -17,8 +18,9 @@ import { getStartupBySlug } from '@/access-data/startup/get-startup-by-slug';
 import { AnimatedShinyText } from '@/components/magicui/animated-shiny-text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { INDUSTRY_LABELS, STAGE_LABELS, TEAM_SIZE_LABELS } from '@/lib/labels';
+import { Separator } from '@/components/ui/separator';
 
 const StartupPresentationPage = async ({
   params,
@@ -38,6 +40,8 @@ const StartupPresentationPage = async ({
     image,
     coverImage,
     mission,
+    website,
+    roles,
     createdAt,
     skills,
     members,
@@ -209,102 +213,139 @@ const StartupPresentationPage = async ({
             </Badge>
           </div>
         </header>
-        {/* Content */}
-        <div className='text-center px-4 md:px-8 mt-16 space-y-10'>
-          <div>
-            <h2
-              className='text-xl font-semibold mb-5'
-              style={{ color: mainText || 'inherit' }}
-            >
-              Our Team
-            </h2>
-            <ul className='flex flex-wrap justify-center gap-6'>
-              {members.map(member => (
-                <li
-                  key={member.name}
-                  className='flex flex-col items-center gap-2'
+        <Separator className='my-10' />
+        {/* Team members */}
+        <div className='px-4 md:px-8'>
+          <h2
+            className='text-3xl font-semibold mb-6'
+            style={{ color: mainText || 'inherit' }}
+          >
+            Our Team
+          </h2>
+          <ul className='flex flex-wrap gap-4 lg:gap-8'>
+            {members.map(member => (
+              <li
+                key={member.name}
+                className='flex flex-col items-center justify-center gap-2'
+              >
+                <Avatar
+                  className='size-32 border'
+                  style={{
+                    borderColor: secondaryBackground || 'var(--border)',
+                    borderRadius: `calc(var(--border-radius) * 1.5)`,
+                  }}
                 >
-                  <Avatar
-                    className='size-16 border'
+                  <AvatarFallback
                     style={{
-                      borderColor: secondaryBackground || 'var(--border)',
                       borderRadius: `calc(var(--border-radius) * 1.5)`,
                     }}
                   >
-                    <AvatarFallback
-                      style={{
-                        borderRadius: `calc(var(--border-radius) * 1.5)`,
-                      }}
-                    >
-                      {member.name?.charAt(0)}
-                    </AvatarFallback>
-                    <AvatarImage
-                      src={member.image || undefined}
-                      alt={member.name || 'Profile photo'}
-                    />
-                  </Avatar>
-                  <div className='space-y-0.5'>
-                    <p
-                      className='font-medium'
-                      style={{ color: mainText || 'inherit' }}
-                    >
-                      {member.name}
-                    </p>
-                    <Badge
-                      variant='secondary'
-                      className='text-violet-500 bg-violet-200/60 hover:bg-violet-200/60'
-                      style={{ borderRadius: `var(--border-radius)` }}
-                    >
-                      {member.role}
-                    </Badge>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2
-              className='text-lg font-semibold mb-3 flex items-center justify-center gap-2'
-              style={{ color: mainText || 'inherit' }}
-            >
-              <Code
-                className='w-5 h-5'
-                style={{ color: secondaryText || 'var(--muted-foreground)' }}
-              />
-              Technologies we use...
-            </h2>
-            <div className='flex flex-wrap justify-center gap-2'>
-              {skills.map(tech => (
-                <Badge
-                  key={tech}
-                  variant='secondary'
-                  className='px-3 py-1'
-                  style={{
-                    backgroundColor: secondaryBackground || '',
-                    color: secondaryText || '',
-                    borderRadius: `var(--border-radius)`,
-                  }}
-                >
-                  {tech}
-                </Badge>
-              ))}
-            </div>
-          </div>
+                    {member.name?.charAt(0)}
+                  </AvatarFallback>
+                  <AvatarImage
+                    src={member.image || undefined}
+                    alt={member.name || 'Profile photo'}
+                  />
+                </Avatar>
+                <div className='text-center space-y-0.5'>
+                  <p
+                    className='font-medium'
+                    style={{ color: mainText || 'inherit' }}
+                  >
+                    {member.name}
+                  </p>
+                  <Badge
+                    variant='secondary'
+                    className='text-violet-500 bg-violet-200/60 hover:bg-violet-200/60'
+                    style={{ borderRadius: `var(--border-radius)` }}
+                  >
+                    {member.role}
+                  </Badge>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
+        <Separator className='my-10' />
+        {/* Tech stack */}
+        <div className='px-4 md:px-8 space-y-10'>
+          <h2
+            className='text-3xl font-semibold mb-3 flex items-center gap-2'
+            style={{ color: mainText || 'inherit' }}
+          >
+            Technologies we use...
+          </h2>
+          <ul className='flex flex-wrap gap-2'>
+            {skills.map(tech => (
+              // <li key={tech}></li>
+              <Badge
+                key={tech}
+                variant='secondary'
+                className='px-4 py-1.5 flex items-center gap-2.5 text-sm font-medium'
+                style={{
+                  backgroundColor: secondaryBackground || '',
+                  color: mainText || '',
+                  borderRadius: `var(--border-radius)`,
+                }}
+              >
+                <Code2 className='size-5 text-muted-foreground' />
+                {tech}
+              </Badge>
+            ))}
+          </ul>
+        </div>
+        <Separator className='my-10' />
+        {/* Available roles */}
+        <div className='px-4 md:px-8 space-y-10'>
+          <h2
+            className='text-3xl font-semibold mb-3 flex items-center gap-2'
+            style={{ color: mainText || 'inherit' }}
+          >
+            Open roles ({roles.length})
+          </h2>
+          <ul className='w-full'>
+            {roles.map(role => (
+              <li
+                key={role.id}
+                className='flex items-center justify-between w-full bg-muted/50 border border-border rounded-lg p-4 shadow'
+              >
+                <div className='flex items-center gap-5'>
+                  <Avatar className='size-12'>
+                    <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={image ?? undefined} />
+                  </Avatar>
+                  <div>
+                    <h6 className='font-semibold'>{role.name}</h6>
+                    <p className='text-muted-foreground text-sm'>
+                      {role.description}
+                    </p>
+                  </div>
+                </div>
+                <Button size='sm' className='group'>
+                  View
+                  <ChevronRight className='size-4 group-hover:translate-x-1 transition-transform' />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Separator className='my-10' />
         {/* Footer (link and powered tag) */}
-        <footer className='mt-16 p-8 pb-2 flex flex-col items-center justify-center gap-3'>
-          <div>
-            <Link
-              href='/'
-              target='_blank'
-              className={buttonVariants({ size: 'lg', variant: 'link' })}
-              style={{
-                color: mainText || '',
-              }}
-            >
-              Visit website <ExternalLink />
-            </Link>
-          </div>
+        <footer className='p-8 pb-2 flex flex-col items-center justify-center gap-3'>
+          {website && (
+            <div>
+              <Link
+                href={website}
+                target='_blank'
+                className={buttonVariants({ size: 'lg', variant: 'link' })}
+                style={{
+                  color: mainText || '',
+                }}
+              >
+                Visit website <ExternalLink />
+              </Link>
+            </div>
+          )}
 
           <AnimatedShinyText className='inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400'>
             <Atom className='mr-1.5 size-4 transition-transform duration-300 ease-in-out' />
