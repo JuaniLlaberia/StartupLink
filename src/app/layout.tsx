@@ -23,7 +23,12 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <NextTopLoader showSpinner={false} color='#8E51FF' />
         <Toaster richColors theme='light' />
-        <ThemeProvider attribute='class' enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute='class'
+          enableSystem
+          disableTransitionOnChange
+          defaultTheme='light'
+        >
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </ThemeProvider>
       </body>
