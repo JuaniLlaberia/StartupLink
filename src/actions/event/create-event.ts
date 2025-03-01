@@ -25,8 +25,15 @@ export const createEvent = authenticatedAction
   .handler(async ({ input, ctx: { userId } }) => {
     await hasAdminPermissions(input.startupId, userId);
 
-    await db.event.create({
+    const { id: eventId } = await db.event.create({
       data: { ...input },
+    });
+
+    await db.eventAttendee.create({
+      data: {
+        eventId,
+        userId,
+      },
     });
 
     revalidatePath(`/dashboard/${input.startupId}/events`);
