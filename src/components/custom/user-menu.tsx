@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   BellDot,
+  Calendar1,
   LayoutDashboard,
   LogOut,
   PlusCircle,
@@ -9,7 +10,6 @@ import {
 import { redirect } from 'next/navigation';
 
 import SignOutButton from '../auth/signout-button';
-import ThemeButton from './theme-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +36,11 @@ const LINKS = [
     label: 'Create startup',
     url: '/startups/new',
     icon: PlusCircle,
+  },
+  {
+    label: 'Events',
+    url: '/my-events',
+    icon: Calendar1,
   },
   {
     label: 'Notifications',
@@ -74,7 +79,6 @@ const UserMenu = async () => {
             </Link>
           </DropdownMenuItem>
         ))}
-        <ThemeButton />
         <DropdownMenuSeparator className='m-0' />
         <SignOutButton
           trigger={
