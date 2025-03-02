@@ -2,9 +2,9 @@ import { redirect } from 'next/navigation';
 
 import SearcStartupshHeader from './(components)/search-header';
 import StartupDropdownActions from './(components)/startup-dropdown-actions';
-import Placeholder from '../../../components/custom/placeholder';
+import Placeholder from '../../../../components/custom/placeholder';
 import { getAllUserStartups } from '@/access-data/startup/get-all-user-startups';
-import { StartupHeader } from '../startups/(components)/startup-reusable';
+import { StartupHeader } from '../../(home-pages)/startups/(components)/startup-reusable';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { formatRelativeDate } from '@/lib/helpers/format-relative-date';

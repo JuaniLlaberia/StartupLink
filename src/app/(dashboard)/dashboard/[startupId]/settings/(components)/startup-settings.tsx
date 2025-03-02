@@ -1,8 +1,8 @@
 import { LogOut, Trash2 } from 'lucide-react';
 
-import DeleteStartupDialog from '@/app/(main-pages)/my-startups/(components)/delete-startup-dialog';
-import LeaveStartupDialog from '@/app/(main-pages)/my-startups/(components)/leave-startup-dialog';
-import SettingsCard from '@/app/(main-pages)/profile/(components)/settings-card';
+import DeleteStartupDialog from '@/app/(main-pages)/(user-pages)/my-startups/(components)/delete-startup-dialog';
+import LeaveStartupDialog from '@/app/(main-pages)/(user-pages)/my-startups/(components)/leave-startup-dialog';
+import SettingsCard from '@/app/(main-pages)/(user-pages)/profile/(components)/settings-card';
 import { Button } from '@/components/ui/button';
 
 type StartupSettingsProps = {

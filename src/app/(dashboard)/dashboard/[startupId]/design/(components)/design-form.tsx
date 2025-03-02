@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   StartupMetadata,
   StartupSkills,
-} from '@/app/(main-pages)/startups/(components)/startup-reusable';
+} from '@/app/(main-pages)/(home-pages)/startups/(components)/startup-reusable';
 import { Separator } from '@/components/ui/separator';
 
 type ConfigOptions = {

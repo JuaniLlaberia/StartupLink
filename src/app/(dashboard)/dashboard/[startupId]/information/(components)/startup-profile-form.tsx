@@ -8,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import SettingsCard from '@/app/(main-pages)/profile/(components)/settings-card';
+import SettingsCard from '@/app/(main-pages)/(user-pages)/profile/(components)/settings-card';
 import TechStackInput from './tech-stack-input';
 import UploadImage from '@/components/custom/upload-image';
 import { updateStartup as updateStartupAction } from '@/actions/startup/update-startup';

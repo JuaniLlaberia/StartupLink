@@ -2,7 +2,7 @@ import { Industry, Stage, TeamSize } from '@prisma/client';
 
 import FiltersForm from '@/components/custom/filters-form';
 import Pagination from '@/components/custom/pagination';
-import Placeholder from '../../../components/custom/placeholder';
+import Placeholder from '../../../../components/custom/placeholder';
 import StartupCard from './(components)/startup-card';
 import { searchStartups } from '@/access-data/startup/get-startups';
 import { TEAM_SIZE_LABELS } from '@/lib/labels';

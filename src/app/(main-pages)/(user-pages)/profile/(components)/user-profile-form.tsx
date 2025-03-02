@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import SettingsCard from './settings-card';
 import SkillsInput from './skills-input';
-import UploadImage from '../../../../components/custom/upload-image';
+import UploadImage from '../../../../../components/custom/upload-image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
