@@ -176,7 +176,6 @@ model StartupRole {
   name           String
   description    String?
   active         Boolean  @default(true)
-  admin          Boolean  @default(false)
   requiresSurvey Boolean  @default(false)
   surveyId       String?
   startupId      String
