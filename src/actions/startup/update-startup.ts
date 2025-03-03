@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
+import { isStartupMember } from '@/access-data/helper';
 
 const updateStartupValidator = z.object({
   id: z.string(),
@@ -28,7 +28,7 @@ export const updateStartup = authenticatedAction
   .createServerAction()
   .input(updateStartupValidator)
   .handler(async ({ input: { id, ...data }, ctx: { userId } }) => {
-    await hasAdminPermissions(id, userId);
+    await isStartupMember(id, userId);
 
     const newSlug = data.slug
       ?.toLowerCase()

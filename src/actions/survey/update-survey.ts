@@ -4,8 +4,8 @@ import { z } from 'zod';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
 import { QuestionSchema } from './survey-types';
+import { isStartupMember } from '@/access-data/helper';
 
 const updateSurveyValidator = z.object({
   surveyId: z.string(),
@@ -22,7 +22,7 @@ export const updateSurvey = authenticatedAction
   .input(updateSurveyValidator)
   .handler(async ({ input, ctx: { userId } }) => {
     const { surveyId, startupId, name, description, questions } = input;
-    await hasAdminPermissions(startupId, userId);
+    await isStartupMember(startupId, userId);
 
     await db.survey.update({
       where: { id: surveyId },

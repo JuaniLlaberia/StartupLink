@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import { authenticatedAction } from '@/lib/safe-actions';
-import { hasAdminPermissions } from '../helpers';
 import { db } from '@/db';
+import { isStartupMember } from '@/access-data/helper';
 
 const createMilestoneValidator = z.object({
   title: z.string().min(1, 'Must provide a milestone title'),
@@ -15,7 +15,7 @@ export const createMilestone = authenticatedAction
   .createServerAction()
   .input(createMilestoneValidator)
   .handler(async ({ input, ctx: { userId } }) => {
-    await hasAdminPermissions(input.startupId, userId);
+    await isStartupMember(input.startupId, userId);
 
     await db.milestone.create({
       data: {

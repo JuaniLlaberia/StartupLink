@@ -4,8 +4,8 @@ import { z } from 'zod';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
 import { QuestionSchema } from './survey-types';
+import { isStartupMember } from '@/access-data/helper';
 
 const createSurveyValidator = z.object({
   name: z.string().min(1, 'Must provide a survey name'),
@@ -21,7 +21,7 @@ export const createSurvey = authenticatedAction
   .input(createSurveyValidator)
   .handler(async ({ input, ctx: { userId } }) => {
     const { startupId, name, description, questions } = input;
-    await hasAdminPermissions(startupId, userId);
+    await isStartupMember(startupId, userId);
 
     const { id: surveyId } = await db.survey.create({
       data: {

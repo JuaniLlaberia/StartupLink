@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
+import { isStartupMember } from '@/access-data/helper';
 
 const updateDesignConfigValidator = z.object({
   designConfigId: z.string(),
@@ -24,7 +24,7 @@ export const updateDesignConfig = authenticatedAction
       input: { startupId, designConfigId, ...data },
       ctx: { userId },
     }) => {
-      await hasAdminPermissions(startupId, userId);
+      await isStartupMember(startupId, userId);
 
       await db.startupDesignConfig.update({
         where: { id: designConfigId },

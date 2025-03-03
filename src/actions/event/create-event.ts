@@ -6,7 +6,7 @@ import { EventVisibility } from '@prisma/client';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
+import { isStartupMember } from '@/access-data/helper';
 
 const createEventValidator = z.object({
   name: z.string().min(1, 'Must provide an event name'),
@@ -23,18 +23,38 @@ export const createEvent = authenticatedAction
   .createServerAction()
   .input(createEventValidator)
   .handler(async ({ input, ctx: { userId } }) => {
-    await hasAdminPermissions(input.startupId, userId);
+    await isStartupMember(input.startupId, userId);
 
     const { id: eventId } = await db.event.create({
       data: { ...input },
     });
 
-    await db.eventAttendee.create({
-      data: {
-        eventId,
-        userId,
-      },
-    });
+    if (input.visibility === 'PRIVATE') {
+      // Add all members as is a private event
+      const startupMembers = await db.startupMember.findMany({
+        where: { startupId: input.startupId },
+        select: {
+          userId: true,
+        },
+      });
+
+      if (startupMembers.length > 0) {
+        await db.eventAttendee.createMany({
+          data: startupMembers.map(member => ({
+            eventId,
+            userId: member.userId,
+          })),
+        });
+      }
+    } else {
+      // Add just who created the event (PUBLIC)
+      await db.eventAttendee.create({
+        data: {
+          eventId,
+          userId,
+        },
+      });
+    }
 
     revalidatePath(`/dashboard/${input.startupId}/events`);
   });

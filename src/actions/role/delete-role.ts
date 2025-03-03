@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
+import { isStartupMember } from '@/access-data/helper';
 
 const deleteRoleValidator = z.object({
   id: z.string(),
@@ -16,7 +16,7 @@ export const deleteRole = authenticatedAction
   .createServerAction()
   .input(deleteRoleValidator)
   .handler(async ({ input: { id, startupId }, ctx: { userId } }) => {
-    await hasAdminPermissions(startupId, userId);
+    await isStartupMember(startupId, userId);
 
     await db.startupRole.delete({
       where: { id },

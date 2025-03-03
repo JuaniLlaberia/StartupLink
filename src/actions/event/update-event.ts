@@ -6,7 +6,7 @@ import { EventVisibility } from '@prisma/client';
 
 import { authenticatedAction } from '@/lib/safe-actions';
 import { db } from '@/db';
-import { hasAdminPermissions } from '../helpers';
+import { isStartupMember } from '@/access-data/helper';
 
 const updateEventValidator = z.object({
   id: z.string(),
@@ -24,7 +24,7 @@ export const updateEvent = authenticatedAction
   .createServerAction()
   .input(updateEventValidator)
   .handler(async ({ input, ctx: { userId } }) => {
-    await hasAdminPermissions(input.startupId, userId);
+    await isStartupMember(input.startupId, userId);
 
     await db.event.update({
       where: { id: input.id },
