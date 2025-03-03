@@ -43,7 +43,6 @@ export const createStartup = authenticatedAction
         name: 'Founder',
         description:
           'Default role created for the founder on startup creation.',
-        admin: true,
         active: false,
         requiresSurvey: false,
         startupId,

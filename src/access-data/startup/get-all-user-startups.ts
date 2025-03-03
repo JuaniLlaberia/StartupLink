@@ -45,7 +45,7 @@ export const getAllUserStartups = async ({
           user: { select: { name: true } },
         },
       },
-      role: { select: { name: true, admin: true } },
+      role: { select: { name: true } },
     },
     orderBy: {
       startup: sortBy === 'name' ? { name: 'asc' } : { createdAt: 'desc' },

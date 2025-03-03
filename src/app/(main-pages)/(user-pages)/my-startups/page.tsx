@@ -48,7 +48,6 @@ const MyStartupsPage = async ({
                 <StartupDropdownActions
                   startupId={startup.id}
                   startupName={startup.name}
-                  isAdmin={role.admin}
                 />
               </div>
               <Separator className='my-4 pointer-events-none' />

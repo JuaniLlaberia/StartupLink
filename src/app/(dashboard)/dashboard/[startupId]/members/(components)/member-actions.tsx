@@ -17,8 +17,6 @@ type MemberActionsProps = {
 };
 
 const MemberActions = ({ startupId, memberId }: MemberActionsProps) => {
-  // Check if user is admin and its not itself
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -18,13 +18,11 @@ import { Button } from '@/components/ui/button';
 type StartupDropdownActionsProps = {
   startupId: string;
   startupName: string;
-  isAdmin: boolean;
 };
 
 const StartupDropdownActions = ({
   startupId,
   startupName,
-  isAdmin,
 }: StartupDropdownActionsProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
@@ -44,14 +42,12 @@ const StartupDropdownActions = ({
           </Link>
         </DropdownMenuItem>
 
-        {/* Link to edit page => ADMINS */}
-        {isAdmin && (
-          <DropdownMenuItem asChild>
-            <Link href={`/dashboard/${startupId}/information`}>
-              <Edit className='size-4' /> Modify startup
-            </Link>
-          </DropdownMenuItem>
-        )}
+        {/* Link to edit page  */}
+        <DropdownMenuItem asChild>
+          <Link href={`/dashboard/${startupId}/information`}>
+            <Edit className='size-4' /> Modify startup
+          </Link>
+        </DropdownMenuItem>
 
         {/* Leave startup modal => ALL */}
         <DropdownMenuSeparator />
@@ -67,23 +63,21 @@ const StartupDropdownActions = ({
           }
         />
 
-        {/* Delete startup modal => ADMINS */}
-        {isAdmin && (
-          <>
-            <DropdownMenuSeparator />
-            <DeleteStartupDialog
-              startupId={startupId}
-              startupName={startupName}
-              onSuccess={() => setIsDropdownOpen(false)}
-              trigger={
-                <DropdownMenuItem onSelect={e => e.preventDefault()}>
-                  <Trash2 className='size-4' />
-                  <span>Delete startup</span>
-                </DropdownMenuItem>
-              }
-            />
-          </>
-        )}
+        {/* Delete startup modal  */}
+        <>
+          <DropdownMenuSeparator />
+          <DeleteStartupDialog
+            startupId={startupId}
+            startupName={startupName}
+            onSuccess={() => setIsDropdownOpen(false)}
+            trigger={
+              <DropdownMenuItem onSelect={e => e.preventDefault()}>
+                <Trash2 className='size-4' />
+                <span>Delete startup</span>
+              </DropdownMenuItem>
+            }
+          />
+        </>
       </DropdownMenuContent>
     </DropdownMenu>
   );

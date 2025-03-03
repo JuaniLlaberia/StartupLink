@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { AtSign, CalendarDays, Shield, Tag, User } from 'lucide-react';
+import { AtSign, CalendarDays, Tag, User } from 'lucide-react';
 
 import MemberActions from './member-actions';
 import CustomTableHeader from '@/components/ui/custom-table-header';
@@ -18,7 +18,6 @@ export type Member = {
   };
   role: {
     name: string;
-    admin: boolean;
   };
   startupId: string;
   createdAt: Date;
@@ -87,36 +86,6 @@ export const columns: ColumnDef<Member>[] = [
           <Badge className='bg-purple-200/60 text-purple-500 hover:bg-purple-200/80'>
             {role}
           </Badge>
-        </div>
-      );
-    },
-  },
-  // Member permissions
-  {
-    accessorKey: 'role.admin',
-    header: ({ column }) => {
-      return (
-        <CustomTableHeader
-          icon={<Shield className='size-3 mr-1.5' />}
-          label='Permissions'
-          column={column}
-        />
-      );
-    },
-    cell: ({ row }) => {
-      const isAdmin = row.original.role.admin;
-
-      return (
-        <div>
-          {isAdmin ? (
-            <Badge className='bg-orange-200/60 text-orange-500 hover:bg-orange-200/80'>
-              Admin
-            </Badge>
-          ) : (
-            <Badge className='bg-blue-200/60 text-blue-500 hover:bg-blue-200/80'>
-              Member
-            </Badge>
-          )}
         </div>
       );
     },
