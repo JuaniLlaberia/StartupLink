@@ -48,7 +48,7 @@ const UserEventsList = ({ events }: UserEventsListProps) => {
     );
 
   return (
-    <ul>
+    <ul className='space-y-2'>
       {events.map(event => (
         <li
           key={event.id}
@@ -94,9 +94,11 @@ const UserEventsList = ({ events }: UserEventsListProps) => {
             <DropdownMenuContent>
               {isToday(event.startTime) && (
                 <>
-                  <DropdownMenuItem onSelect={e => e.preventDefault()}>
-                    <Tv className='size-3.5 mr-2' strokeWidth={1.5} />
-                    Go to event
+                  <DropdownMenuItem onSelect={e => e.preventDefault()} asChild>
+                    <Link href={`/events/${event.id}`}>
+                      <Tv className='size-3.5 mr-2' strokeWidth={1.5} />
+                      Go to event
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
