@@ -38,7 +38,6 @@ export type RoleFormData = {
   name: string;
   description?: string;
   active: boolean;
-  admin: boolean;
   requiresSurvey: boolean;
 };
 
@@ -46,7 +45,6 @@ const RoleFormSchemaValidator = z.object({
   name: z.string().min(1, 'Must provide a name'),
   description: z.optional(z.string()),
   active: z.boolean(),
-  admin: z.boolean(),
   requiresSurvey: z.boolean(),
 });
 
@@ -71,7 +69,6 @@ const RoleForm = ({
       name: defaultData?.name ?? '',
       description: defaultData?.description ?? '',
       active: defaultData?.active ?? false,
-      admin: defaultData?.admin ?? false,
       requiresSurvey: defaultData?.requiresSurvey ?? false,
     },
   });
@@ -170,21 +167,6 @@ const RoleForm = ({
             <Controller
               control={control}
               name='active'
-              render={({ field: { value, onChange, ...field } }) => (
-                <Switch checked={value} onCheckedChange={onChange} {...field} />
-              )}
-            />
-          </div>
-          <div className='flex items-center justify-between border border-border rounded-lg p-2'>
-            <div>
-              <Label>Admin permission</Label>
-              <p className='text-sm text-muted-foreground'>
-                Member will be able to access all dashboard pages.
-              </p>
-            </div>
-            <Controller
-              control={control}
-              name='admin'
               render={({ field: { value, onChange, ...field } }) => (
                 <Switch checked={value} onCheckedChange={onChange} {...field} />
               )}

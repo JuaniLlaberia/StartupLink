@@ -40,11 +40,6 @@ const RolesList = ({
                         Inactive
                       </Badge>
                     )}
-                    {role.admin && (
-                      <Badge className='bg-orange-200/60 text-orange-500 hover:bg-orange-200/80'>
-                        Admin
-                      </Badge>
-                    )}
                   </div>
                 </div>
                 <div className='flex items-center gap-1.5'>
