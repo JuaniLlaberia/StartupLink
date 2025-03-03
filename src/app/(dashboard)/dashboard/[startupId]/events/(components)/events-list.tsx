@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Event } from '@prisma/client';
 import { Calendar1, Edit, Link2, Plus, Trash2 } from 'lucide-react';
 
@@ -6,7 +7,7 @@ import DeleteEventDialog from './delete-event-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { formatEventTime } from '../(helper)/format-event-time';
-import Link from 'next/link';
+import EventAtendees from './event-atendees';
 
 const EventsList = ({
   startupId,
@@ -23,7 +24,7 @@ const EventsList = ({
             {events.map(event => (
               <li
                 key={event.id}
-                className='w-full max-w-2xl flex items-center gap-6 border border-border rounded-lg p-4'
+                className='w-full max-w-3xl flex items-center gap-6 border border-border rounded-lg p-4'
               >
                 <div className='w-full'>
                   <h3 className='text-sm font-medium'>{event.name}</h3>
@@ -65,6 +66,8 @@ const EventsList = ({
                       </Button>
                     }
                   />
+
+                  <EventAtendees eventId={event.id} startupId={startupId} />
 
                   <DeleteEventDialog
                     eventId={event.id}
