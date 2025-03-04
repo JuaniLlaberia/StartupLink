@@ -5,19 +5,20 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Industry, Stage, TeamSize } from '@prisma/client';
-import { motion } from 'framer-motion';
-import { AlertCircle, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import type { MouseEvent, ReactNode } from 'react';
 
 import Radio from '@/components/ui/radio';
 import { createStartup as createStartupAction } from '@/actions/startup/create-startup';
 import { useMultiStepForm } from '@/hooks/use-multistep-form';
 import { useServerActionMutation } from '@/hooks/use-server-action';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { INDUSTRY_LABELS, STAGE_LABELS, TEAM_SIZE_LABELS } from '@/lib/labels';
+import {
+  FormNavigation,
+  StepWrapper,
+} from '@/components/custom/animated-form-components';
 
 type FormData = {
   name: string;
@@ -26,72 +27,6 @@ type FormData = {
   stage: Stage;
   teamSize: TeamSize;
 };
-
-const StepWrapper = ({
-  children,
-  className = '',
-}: {
-  children: ReactNode;
-  className?: string;
-}) => (
-  <motion.div
-    initial={{ x: '50%', opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
-    exit={{ x: '-50%', opacity: 0 }}
-    transition={{ duration: 0.3, ease: 'easeInOut' }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
-
-type FormNavigationProps = {
-  onBack?: (e: MouseEvent) => void;
-  isLastStep: boolean;
-  isPending: boolean;
-  className?: string;
-};
-const FormNavigation = ({
-  onBack,
-  isLastStep,
-  isPending,
-  className = '',
-}: FormNavigationProps) => (
-  <div
-    className={`mt-5 md:mt-7 flex flex-col gap-2 md:flex-row-reverse items-end ${className}`}
-  >
-    <Button
-      size='sm'
-      disabled={isPending}
-      className='w-full md:w-auto group'
-      aria-label={isLastStep ? 'Create startup' : 'Next step'}
-      type='submit'
-    >
-      {isPending && <Loader2 className='size-4 animate-spin' />}
-      {isLastStep ? (
-        'Create startup'
-      ) : (
-        <>
-          Next
-          <ChevronRight className='size-4 group-hover:translate-x-1 transition-transform' />
-        </>
-      )}
-    </Button>
-    {onBack && (
-      <Button
-        onClick={onBack}
-        variant='outline'
-        size='sm'
-        className='w-full md:w-auto group'
-        aria-label='Previous step'
-        type='button'
-      >
-        <ChevronLeft className='size-4 mr-1.5 group-hover:-translate-x-1 transition-transform' />
-        Go back
-      </Button>
-    )}
-  </div>
-);
 
 const StartupValidationSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -295,6 +230,7 @@ const StartupForm = () => {
             onBack={e => prevStep(e)}
             isPending={isPending}
             isLastStep={true}
+            submitText='Create startup'
           />
         </div>
       </StepWrapper>,
