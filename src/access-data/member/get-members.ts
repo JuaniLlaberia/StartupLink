@@ -28,7 +28,7 @@ export const getMembers = async ({
       id: true,
       createdAt: true,
       user: { select: { name: true, image: true, email: true } },
-      role: { select: { name: true, admin: true } },
+      role: { select: { name: true } },
       startupId: true,
     },
     skip: (page - 1) * pageSize,
