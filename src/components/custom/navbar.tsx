@@ -22,6 +22,10 @@ const LINKS = [
     label: 'Forum',
     url: '/forum',
   },
+  {
+    label: 'Events',
+    url: '/events',
+  },
 ];
 
 const Navbar = async () => {
