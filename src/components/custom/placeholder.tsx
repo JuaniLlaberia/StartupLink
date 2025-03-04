@@ -1,18 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { Building, HelpCircle, User } from 'lucide-react';
+import { Building, Calendar1, HelpCircle, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-type PlaceholderType = 'startup' | 'people' | 'question';
+type PlaceholderType = 'startup' | 'people' | 'question' | 'event';
 
 const typeIcon: Record<PlaceholderType, typeof Building> = {
   startup: Building,
   people: User,
   question: HelpCircle,
+  event: Calendar1,
 };
 
 const Placeholder = ({
