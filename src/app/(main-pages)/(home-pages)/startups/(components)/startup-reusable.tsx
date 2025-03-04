@@ -7,7 +7,15 @@ import { Badge } from '@/components/ui/badge';
 
 export type StartupData = Startup & { user: { name: string | null } } & {
   hasUserUpvoted: boolean;
-} & { openRoles: number };
+} & { openRoles: number } & {
+  roles: {
+    id: string;
+    name: string;
+    description: string;
+    requiresSurvey: boolean;
+    surveyId: string;
+  }[];
+};
 
 type StartupHeaderProps = {
   data: Pick<StartupData, 'name' | 'user' | 'image' | 'verified'>;

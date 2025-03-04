@@ -35,7 +35,13 @@ export const getStartupBySlug = async ({
       },
       StartupRole: {
         where: { active: true },
-        select: { id: true, name: true, description: true },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          requiresSurvey: true,
+          surveyId: true,
+        },
       },
     },
   });

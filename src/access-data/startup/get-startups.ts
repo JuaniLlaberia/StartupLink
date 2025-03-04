@@ -83,6 +83,16 @@ export async function searchStartups({
             take: 1,
           }
         : false,
+      StartupRole: {
+        where: { active: true },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          requiresSurvey: true,
+          surveyId: true,
+        },
+      },
     },
     orderBy:
       sortBy === 'upvotes'
@@ -96,6 +106,7 @@ export async function searchStartups({
     ...startup,
     hasUserUpvoted: userId ? startup.Upvote.length > 0 : false,
     openRoles: startup._count.StartupRole,
+    roles: startup.StartupRole,
     Upvote: undefined,
     _count: undefined,
   }));

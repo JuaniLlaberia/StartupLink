@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {
   Atom,
   Building,
-  ChevronRight,
   Code2,
   ExternalLink,
   Globe,
@@ -18,9 +17,10 @@ import { getStartupBySlug } from '@/access-data/startup/get-startup-by-slug';
 import { AnimatedShinyText } from '@/components/magicui/animated-shiny-text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { INDUSTRY_LABELS, STAGE_LABELS, TEAM_SIZE_LABELS } from '@/lib/labels';
 import { Separator } from '@/components/ui/separator';
+import RoleApplicationBtn from '@/components/custom/role-application-btn';
 
 const StartupPresentationPage = async ({
   params,
@@ -31,6 +31,7 @@ const StartupPresentationPage = async ({
   const startup = await getStartupBySlug({ startupSlug });
 
   const {
+    id: startupId,
     name,
     location,
     verified,
@@ -303,7 +304,7 @@ const StartupPresentationPage = async ({
           >
             Open roles ({roles.length})
           </h2>
-          <ul className='w-full'>
+          <ul className='w-full space-y-2.5'>
             {roles.map(role => (
               <li
                 key={role.id}
@@ -321,10 +322,12 @@ const StartupPresentationPage = async ({
                     </p>
                   </div>
                 </div>
-                <Button size='sm' className='group'>
-                  View
-                  <ChevronRight className='size-4 group-hover:translate-x-1 transition-transform' />
-                </Button>
+                <RoleApplicationBtn
+                  startupId={startupId}
+                  roleId={role.id}
+                  requiresSurvey={role.requiresSurvey}
+                  surveyId={role.surveyId ?? undefined}
+                />
               </li>
             ))}
           </ul>
