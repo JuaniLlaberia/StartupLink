@@ -110,7 +110,10 @@ const DashboardSidebarMain = () => {
                 </SidebarMenuButton>
                 {newFeature && (
                   <SidebarMenuBadge>
-                    <Badge className='bg-violet-200/60 text-violet-500 text-[10px] py-0.5 px-1.5'>
+                    <Badge
+                      variant='secondary'
+                      className='bg-violet-200/60 text-violet-500 text-[10px] py-0.5 px-1.5'
+                    >
                       New
                     </Badge>
                   </SidebarMenuBadge>
