@@ -11,6 +11,9 @@ const updateRoleValidator = z.object({
   id: z.string(),
   name: z.optional(z.string()),
   startupId: z.string(),
+  requiresSurvey: z.boolean(),
+  active: z.boolean(),
+  surveyId: z.optional(z.string()),
 });
 
 export const updateRole = authenticatedAction

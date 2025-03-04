@@ -7,7 +7,7 @@ const SurveyPage = async ({
   params: Promise<{ startupId: string; surveyId: string }>;
 }) => {
   const { startupId, surveyId } = await params;
-  const survey = await getSurvey({ surveyId, startupId });
+  const survey = await getSurvey({ surveyId });
 
   return (
     <section>

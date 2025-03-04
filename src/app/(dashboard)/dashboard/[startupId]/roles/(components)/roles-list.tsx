@@ -1,4 +1,4 @@
-import { StartupRole } from '@prisma/client';
+import { StartupRole, Survey } from '@prisma/client';
 import { Edit, Plus, Tag, Trash2 } from 'lucide-react';
 
 import DeleteRoleDialog from './delete-role-dialog';
@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button';
 const RolesList = ({
   startupId,
   roles,
+  surveys,
 }: {
   startupId: string;
   roles: StartupRole[];
+  surveys: Omit<Survey, 'startupId' | 'questions'>[];
 }) => {
   return (
     <>
@@ -30,20 +32,35 @@ const RolesList = ({
                   </p>
                   <div className='flex mt-3 space-x-2.5'>
                     {role.active ? (
-                      <Badge className='flex items-center gap-1.5 w-auto text-green-500 bg-green-200/60 hover:bg-green-200/80'>
+                      <Badge
+                        variant='secondary'
+                        className='flex items-center gap-1.5 w-auto text-green-500 bg-green-200/60 hover:bg-green-200/80'
+                      >
                         <div className='size-[6px] shrink-0 rounded-full animate-pulse bg-green-500' />
                         Active
                       </Badge>
                     ) : (
-                      <Badge className='flex items-center gap-1.5 w-auto text-red-500 bg-red-200/60 hover:bg-red-200/80'>
+                      <Badge
+                        variant='secondary'
+                        className='flex items-center gap-1.5 w-auto text-red-500 bg-red-200/60 hover:bg-red-200/80'
+                      >
                         <div className='size-[0.4rem] shrink-0 rounded-full bg-red-500' />
                         Inactive
+                      </Badge>
+                    )}
+                    {role.requiresSurvey && (
+                      <Badge
+                        variant='secondary'
+                        className='flex items-center gap-1.5 w-auto text-violet-500 bg-violet-200/60 hover:bg-violet-200/80'
+                      >
+                        Needs survey
                       </Badge>
                     )}
                   </div>
                 </div>
                 <div className='flex items-center gap-1.5'>
                   <RoleForm
+                    surveys={surveys}
                     startupId={startupId}
                     data={role}
                     trigger={
@@ -68,6 +85,7 @@ const RolesList = ({
             ))}
           </ul>
           <RoleForm
+            surveys={surveys}
             startupId={startupId}
             trigger={
               <Button size='sm' className='mt-4'>
@@ -86,6 +104,7 @@ const RolesList = ({
             You can start by creating one and assign it to a role.
           </p>
           <RoleForm
+            surveys={surveys}
             startupId={startupId}
             trigger={
               <Button size='sm' className='mt-4'>

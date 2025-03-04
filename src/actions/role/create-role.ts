@@ -13,6 +13,7 @@ const createRoleValidator = z.object({
   active: z.boolean(),
   requiresSurvey: z.boolean(),
   startupId: z.string(),
+  surveyId: z.optional(z.string()),
 });
 
 export const createRole = authenticatedAction

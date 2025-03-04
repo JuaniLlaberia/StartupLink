@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { StartupRole } from '@prisma/client';
+import { StartupRole, Survey } from '@prisma/client';
 import { ReactNode, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -26,9 +26,22 @@ import { createRole as createRoleAction } from '@/actions/role/create-role';
 import { updateRole as updateRoleAction } from '@/actions/role/update-role';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+type ExtendedStartupRole = StartupRole & {
+  requiresSurvey?: boolean;
+  surveyId?: string | null;
+};
 
 type RoleFormProps = {
-  data?: StartupRole;
+  data?: ExtendedStartupRole;
+  surveys: Omit<Survey, 'startupId' | 'questions'>[];
   startupId: string;
   trigger?: ReactNode;
   onSuccess?: () => void;
@@ -39,18 +52,34 @@ export type RoleFormData = {
   description?: string;
   active: boolean;
   requiresSurvey: boolean;
+  surveyId?: string;
 };
 
-const RoleFormSchemaValidator = z.object({
-  name: z.string().min(1, 'Must provide a name'),
-  description: z.optional(z.string()),
-  active: z.boolean(),
-  requiresSurvey: z.boolean(),
-});
+const RoleFormSchemaValidator = z
+  .object({
+    name: z.string().min(1, 'Must provide a name'),
+    description: z.optional(z.string()),
+    active: z.boolean(),
+    requiresSurvey: z.boolean(),
+    surveyId: z.string().optional(),
+  })
+  .refine(
+    data => {
+      if (data.requiresSurvey) {
+        return !!data.surveyId;
+      }
+      return true; // Otherwise no validation needed
+    },
+    {
+      message: 'Survey is required when "Requires Survey" is checked',
+      path: ['surveyId'],
+    }
+  );
 
 const RoleForm = ({
   data: defaultData,
   startupId,
+  surveys,
   trigger,
   onSuccess,
 }: RoleFormProps) => {
@@ -62,6 +91,7 @@ const RoleForm = ({
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<RoleFormData>({
     resolver: zodResolver(RoleFormSchemaValidator),
@@ -70,8 +100,11 @@ const RoleForm = ({
       description: defaultData?.description ?? '',
       active: defaultData?.active ?? false,
       requiresSurvey: defaultData?.requiresSurvey ?? false,
+      surveyId: defaultData?.surveyId ?? undefined,
     },
   });
+
+  const requiresSurvey = watch('requiresSurvey');
 
   const { mutate: createRole, isPending: isCreating } = useServerActionMutation(
     createRoleAction,
@@ -101,8 +134,19 @@ const RoleForm = ({
 
   const handleOnSubmit = handleSubmit(data => {
     if (isEditing && defaultData?.id) {
-      updateRole({ id: defaultData.id, ...data, startupId });
-    } else createRole({ ...data, startupId });
+      updateRole({
+        id: defaultData.id,
+        ...data,
+        startupId,
+        surveyId: data.requiresSurvey ? data.surveyId : undefined,
+      });
+    } else {
+      createRole({
+        ...data,
+        startupId,
+        surveyId: data.requiresSurvey ? data.surveyId : undefined,
+      });
+    }
   });
 
   const isLoading = isCreating || isUpdating;
@@ -161,7 +205,7 @@ const RoleForm = ({
             <div>
               <Label>Active</Label>
               <p className='text-sm text-muted-foreground'>
-                It&apos; will show to users in the browse page.
+                It&apos;s will show to users in the browse page.
               </p>
             </div>
             <Controller
@@ -188,6 +232,45 @@ const RoleForm = ({
               )}
             />
           </div>
+
+          {/* Survey selector that only appears when requiresSurvey is true */}
+          {requiresSurvey && (
+            <div>
+              <Label htmlFor='surveyId'>Select Survey</Label>
+              <Controller
+                control={control}
+                name='surveyId'
+                render={({ field }) => (
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    value={field.value || ''}
+                  >
+                    <SelectTrigger className='mt-1'>
+                      <SelectValue placeholder='Select a survey' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {surveys.map(survey => (
+                        <SelectItem key={survey.id} value={survey.id}>
+                          {survey.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.surveyId && (
+                <p
+                  id='surveyId-error'
+                  className='flex items-center gap-1.5 px-1 text-red-500 mt-1 text-sm'
+                  role='alert'
+                >
+                  <AlertCircle className='size-4' />
+                  {errors.surveyId.message}
+                </p>
+              )}
+            </div>
+          )}
 
           <DialogFooter className='pt-5'>
             <div className='w-full flex flex-col items-center gap-2'>

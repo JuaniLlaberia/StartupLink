@@ -1,5 +1,6 @@
 import { getRoles } from '@/access-data/role/get-roles';
 import RolesList from './(components)/roles-list';
+import { getStartupSurveys } from '@/access-data/survey/get-startup-surveys';
 
 const RolesPage = async ({
   params,
@@ -7,7 +8,10 @@ const RolesPage = async ({
   params: Promise<{ startupId: string }>;
 }) => {
   const { startupId } = await params;
-  const roles = await getRoles({ startupId });
+  const [roles, surveys] = await Promise.all([
+    getRoles({ startupId }),
+    getStartupSurveys({ startupId }),
+  ]);
 
   return (
     <section>
@@ -18,7 +22,7 @@ const RolesPage = async ({
           one of the created roles.
         </p>
       </header>
-      <RolesList startupId={startupId} roles={roles} />
+      <RolesList startupId={startupId} roles={roles} surveys={surveys} />
     </section>
   );
 };
