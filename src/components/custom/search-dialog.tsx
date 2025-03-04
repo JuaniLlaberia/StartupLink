@@ -1,7 +1,14 @@
 'use client';
 
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { Building, Check, CircleHelp, Search, User } from 'lucide-react';
+import {
+  Building,
+  Calendar1,
+  Check,
+  CircleHelp,
+  Search,
+  User,
+} from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '../ui/button';
@@ -22,6 +29,7 @@ const SEARCH_TYPES = [
   { label: 'Search Startups', type: 'startups', icon: Building },
   { label: 'Search People', type: 'people', icon: User },
   { label: 'Search Forum Questions', type: 'questions', icon: CircleHelp },
+  { label: 'Search Events', type: 'events', icon: Calendar1 },
 ];
 
 const SearchDialog = () => {
