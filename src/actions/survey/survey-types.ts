@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
-const QuestionTypeEnum = z.enum([
-  'text',
-  'textarea',
-  'single_choice',
-  'dropdown',
-]);
+const QuestionTypeEnum = z.enum(['text', 'textarea', 'dropdown']);
 
 const OptionSchema = z.object({
   id: z.string().optional(),
@@ -29,7 +24,7 @@ const TextQuestionSchema = BaseQuestionSchema.extend({
 
 // Choice question schema
 const ChoiceQuestionSchema = BaseQuestionSchema.extend({
-  type: z.enum(['single_choice', 'dropdown']),
+  type: z.enum(['dropdown']),
   options: z.array(OptionSchema),
   allowOther: z.boolean().optional(),
 });
