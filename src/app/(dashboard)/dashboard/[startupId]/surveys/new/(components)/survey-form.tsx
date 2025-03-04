@@ -104,20 +104,11 @@ const SurveyForm = ({ startupId, data }: SurveyFormProps) => {
           maxLength: undefined,
         };
         break;
-      case 'single_choice':
       case 'dropdown':
         updatedQuestion = {
           ...baseQuestion,
           options: [{ id: uuidv4(), text: 'Option 1', order: 0 }],
           allowOther: false,
-        };
-        break;
-      case 'number':
-        updatedQuestion = {
-          ...baseQuestion,
-          min: undefined,
-          max: undefined,
-          step: 1,
         };
         break;
       default:
@@ -332,9 +323,7 @@ const SurveyForm = ({ startupId, data }: SurveyFormProps) => {
                 </div>
               )}
 
-              {['single_choice', 'dropdown'].includes(
-                watchQuestionTypes?.[index]?.type
-              ) && (
+              {['dropdown'].includes(watchQuestionTypes?.[index]?.type) && (
                 <div className='space-y-3'>
                   <Label>Options</Label>
 
