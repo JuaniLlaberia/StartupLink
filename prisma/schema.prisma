@@ -90,12 +90,13 @@ model User {
   urls               String[]            @default([])
   skills             String[]            @default([])
 
-  Startup       Startup[]
-  StartupMember StartupMember[]
-  Question      Question[]
-  Answer        Answer[]
-  Notification  Notification[]
-  EventAttendee EventAttendee[]
+  Startup            Startup[]
+  StartupMember      StartupMember[]
+  Question           Question[]
+  Answer             Answer[]
+  Notification       Notification[]
+  EventAttendee      EventAttendee[]
+  StartupApplication StartupApplication[]
 
   @@index([email])
 }
@@ -122,29 +123,17 @@ model Startup {
 
   StartupMember       StartupMember[]
   StartupRole         StartupRole[]
-  Milestone           Milestone[]
   Upvote              Upvote[]
   StartupDesignConfig StartupDesignConfig[]
   Survey              Survey[]
   Event               Event[]
+  StartupApplication  StartupApplication[]
 
   @@index([slug])
   @@index([createdBy])
   @@index([industry])
   @@index([teamSize, industry, stage, verified])
   @@index([name, mission])
-}
-
-model Milestone {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  date        DateTime
-  startupId   String
-
-  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
-
-  @@index([startupId])
 }
 
 model Upvote {
@@ -182,8 +171,10 @@ model StartupRole {
   createdAt      DateTime @default(now())
 
   startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  survey  Survey? @relation(fields: [surveyId], references: [id], onDelete: Cascade)
 
-  StartupMember StartupMember[]
+  StartupMember      StartupMember[]
+  StartupApplication StartupApplication[]
 
   @@index([startupId])
 }
@@ -201,6 +192,19 @@ model StartupMember {
 
   @@unique([startupId, userId])
   @@index([startupId])
+}
+
+model StartupApplication {
+  id             String   @id @default(cuid())
+  startupId      String
+  userId         String
+  roleId         String
+  surveyResponse Json?
+  createdAt      DateTime @default(now())
+
+  startup Startup     @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    StartupRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
 }
 
 model Feedback {
@@ -258,7 +262,8 @@ model Survey {
   createdAt   DateTime @default(now())
   startupId   String
 
-  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  startup     Startup       @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  StartupRole StartupRole[]
 
   @@index([startupId])
 }
