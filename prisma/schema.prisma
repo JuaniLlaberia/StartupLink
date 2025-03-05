@@ -64,12 +64,6 @@ enum WeeklyAvailability {
   MORE_THAN_THIRTY
 }
 
-enum NotificationType {
-  STARTUP_INVITE
-  STARTUP_REQUEST
-  FORUM_ANSWER
-}
-
 enum EventVisibility {
   PUBLIC
   PRIVATE
@@ -94,7 +88,6 @@ model User {
   StartupMember      StartupMember[]
   Question           Question[]
   Answer             Answer[]
-  Notification       Notification[]
   EventAttendee      EventAttendee[]
   StartupApplication StartupApplication[]
 
@@ -108,7 +101,6 @@ model Startup {
   mission    String
   location   String?
   verified   Boolean  @default(false)
-  looking    Boolean  @default(true)
   stage      Stage
   industry   Industry
   teamSize   TeamSize
@@ -239,18 +231,6 @@ model Answer {
 
   user     User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-}
-
-model Notification {
-  id         String           @id @default(cuid())
-  message    String
-  type       NotificationType
-  entityId   String?
-  isRead     Boolean          @default(false)
-  createdAt  DateTime         @default(now())
-  receiverId String
-
-  user User @relation(fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
 model Survey {
