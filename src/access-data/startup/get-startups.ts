@@ -67,7 +67,6 @@ export async function searchStartups({
       teamSize: true,
       skills: true,
       verified: true,
-      looking: true,
       image: true,
       coverImage: true,
       createdBy: true,
