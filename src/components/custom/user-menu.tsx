@@ -1,15 +1,16 @@
+'use client';
+
 import Link from 'next/link';
 import {
-  BellDot,
   Calendar1,
   LayoutDashboard,
   LogOut,
   PlusCircle,
   User,
 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
-import SignOutButton from '../auth/signout-button';
+import SearchDialog from './search-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +20,9 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { getUser } from '@/access-data/user/get-auth-user';
+import { useServerActionQuery } from '@/hooks/use-server-action';
+import { getAuthUser } from '@/access-data/user/public-get-auth-user-by-email';
+import { Skeleton } from '../ui/skeleton';
 
 const LINKS = [
   {
@@ -42,31 +45,31 @@ const LINKS = [
     url: '/my-events',
     icon: Calendar1,
   },
-  {
-    label: 'Notifications',
-    url: '/notifications',
-    icon: BellDot,
-  },
 ];
 
-const UserMenu = async () => {
-  const user = await getUser();
-  if (!user) redirect('/');
+const UserMenu = () => {
+  const { isLoading, data } = useServerActionQuery(getAuthUser, {
+    input: undefined,
+    queryKey: ['get-user'],
+  });
+
+  if (isLoading) return <Skeleton className='size-8' />;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src={user.image ? user.image : undefined} />
-          <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+          <AvatarImage src={data?.image ? data.image : undefined} />
+          <AvatarFallback>{data?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='p-0'>
         <DropdownMenuLabel className='flex flex-col font-normal px-2.5 py-2'>
-          <span className='font-medium text-sm'>{user.name}</span>
-          <span className='text-xs text-muted-foreground'>{user.email}</span>
+          <span className='font-medium text-sm'>{data?.name}</span>
+          <span className='text-xs text-muted-foreground'>{data?.email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className='m-0' />
+        <SearchDialog isMobile />
         {LINKS.map(({ label, url, icon: Icon }) => (
           <DropdownMenuItem
             key={url}
@@ -80,14 +83,15 @@ const UserMenu = async () => {
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator className='m-0' />
-        <SignOutButton
-          trigger={
-            <DropdownMenuItem className='rounded-none group pr-5'>
-              <LogOut className='size-4 mr-0.5 ml-0.5 text-muted-foreground group-hover:text-primary' />
-              Sign out
-            </DropdownMenuItem>
-          }
-        />
+        <DropdownMenuItem
+          className='rounded-none group pr-5'
+          onClick={() => {
+            signOut({ redirectTo: '/' });
+          }}
+        >
+          <LogOut className='size-4 mr-0.5 ml-0.5 text-muted-foreground group-hover:text-primary' />
+          Sign out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
