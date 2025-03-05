@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -26,9 +25,9 @@ const AuthDialog = ({ trigger }: AuthDialogProps) => {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <div className='space-y-1 flex flex-col items-center mb-4'>
-          <DialogTitle className='text-2xl'>Welcome to Sparkify</DialogTitle>
+          <DialogTitle className='text-2xl'>Welcome to StartupLink</DialogTitle>
           <DialogDescription>
-            To use Sparkify you must log into an account or create one.
+            To use StartupLink you must log into an account or create one.
           </DialogDescription>
         </div>
 
@@ -37,12 +36,6 @@ const AuthDialog = ({ trigger }: AuthDialogProps) => {
           <GithubButton />
           <GitlabButton />
         </div>
-
-        <DialogFooter className='justify-center mt-3'>
-          <p className='text-sm text-muted-foreground'>
-            By using Sparkify, you understand that it can make mistakes.
-          </p>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
