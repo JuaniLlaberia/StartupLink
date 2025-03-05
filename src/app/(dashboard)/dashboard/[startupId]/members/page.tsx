@@ -1,15 +1,19 @@
 import Pagination from '@/components/custom/pagination';
 import { getMembers } from '@/access-data/member/get-members';
 import { INITIAL_PAGE_SIZE } from '@/lib/consts';
-import { DataTable } from './(components)/data-table';
 import { columns } from './(components)/columns';
+import { DataTable } from '@/components/custom/data-table';
 
 const MembersPage = async ({
   params,
+  searchParams,
 }: {
-  params: Promise<{ startupId: string; page: number }>;
+  params: Promise<{ startupId: string }>;
+  searchParams: Promise<{ page: number }>;
 }) => {
-  const { startupId, page } = await params;
+  const { startupId } = await params;
+  const { page } = await searchParams;
+
   const members = await getMembers({
     startupId,
     page: page || 1,
