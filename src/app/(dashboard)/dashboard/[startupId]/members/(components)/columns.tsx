@@ -83,7 +83,10 @@ export const columns: ColumnDef<Member>[] = [
 
       return (
         <div>
-          <Badge className='bg-purple-200/60 text-purple-500 hover:bg-purple-200/80'>
+          <Badge
+            variant='secondary'
+            className='bg-purple-200/60 text-purple-500 hover:bg-purple-200/80'
+          >
             {role}
           </Badge>
         </div>
