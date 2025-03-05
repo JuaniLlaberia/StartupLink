@@ -16,7 +16,8 @@ export const deleteRole = authenticatedAction
   .createServerAction()
   .input(deleteRoleValidator)
   .handler(async ({ input: { id, startupId }, ctx: { userId } }) => {
-    await isStartupMember(startupId, userId);
+    const isMember = await isStartupMember(startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.startupRole.delete({
       where: { id },

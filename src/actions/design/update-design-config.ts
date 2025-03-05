@@ -24,7 +24,8 @@ export const updateDesignConfig = authenticatedAction
       input: { startupId, designConfigId, ...data },
       ctx: { userId },
     }) => {
-      await isStartupMember(startupId, userId);
+      const isMember = await isStartupMember(startupId, userId);
+      if (!isMember) throw new Error('Need to be a member');
 
       await db.startupDesignConfig.update({
         where: { id: designConfigId },

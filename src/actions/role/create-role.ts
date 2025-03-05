@@ -20,7 +20,8 @@ export const createRole = authenticatedAction
   .createServerAction()
   .input(createRoleValidator)
   .handler(async ({ input, ctx: { userId } }) => {
-    await isStartupMember(input.startupId, userId);
+    const isMember = await isStartupMember(input.startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.startupRole.create({
       data: { ...input },

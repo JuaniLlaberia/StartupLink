@@ -17,7 +17,6 @@ const updateStartupValidator = z.object({
   website: z.optional(z.string()),
   stage: z.nativeEnum(Stage),
   industry: z.nativeEnum(Industry),
-  looking: z.boolean(),
   teamSize: z.optional(z.nativeEnum(TeamSize)),
   image: z.optional(z.string()),
   coverImage: z.optional(z.string()),
@@ -28,7 +27,8 @@ export const updateStartup = authenticatedAction
   .createServerAction()
   .input(updateStartupValidator)
   .handler(async ({ input: { id, ...data }, ctx: { userId } }) => {
-    await isStartupMember(id, userId);
+    const isMember = await isStartupMember(id, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     const newSlug = data.slug
       ?.toLowerCase()

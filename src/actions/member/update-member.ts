@@ -16,7 +16,8 @@ export const updateMember = authenticatedAction
   .createServerAction()
   .input(updateMemberValidator)
   .handler(async ({ input: { id, roleId, startupId }, ctx: { userId } }) => {
-    await isStartupMember(startupId, userId);
+    const isMember = await isStartupMember(startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.startupMember.update({
       where: { id },

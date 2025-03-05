@@ -17,7 +17,8 @@ export const deleteSurvey = authenticatedAction
   .input(deleteSurveyValidator)
   .handler(async ({ input, ctx: { userId } }) => {
     const { surveyId, startupId } = input;
-    await isStartupMember(startupId, userId);
+    const isMember = await isStartupMember(startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.survey.delete({
       where: { id: surveyId },

@@ -21,7 +21,6 @@ export const toggleUpvote = authenticatedAction
 
     if (alreadyVoted) {
       await db.upvote.delete({ where: { id: alreadyVoted.id } });
-      console.log('TEST3');
     } else {
       await db.upvote.create({
         data: {

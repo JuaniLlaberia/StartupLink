@@ -21,7 +21,8 @@ export const createSurvey = authenticatedAction
   .input(createSurveyValidator)
   .handler(async ({ input, ctx: { userId } }) => {
     const { startupId, name, description, questions } = input;
-    await isStartupMember(startupId, userId);
+    const isMember = await isStartupMember(startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     const { id: surveyId } = await db.survey.create({
       data: {

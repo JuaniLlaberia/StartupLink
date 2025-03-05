@@ -22,7 +22,8 @@ export const updateSurvey = authenticatedAction
   .input(updateSurveyValidator)
   .handler(async ({ input, ctx: { userId } }) => {
     const { surveyId, startupId, name, description, questions } = input;
-    await isStartupMember(startupId, userId);
+    const isMember = await isStartupMember(startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.survey.update({
       where: { id: surveyId },

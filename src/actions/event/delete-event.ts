@@ -16,7 +16,8 @@ export const deleteEvent = authenticatedAction
   .createServerAction()
   .input(deleteEventValidator)
   .handler(async ({ input, ctx: { userId } }) => {
-    await isStartupMember(input.startupId, userId);
+    const isMember = await isStartupMember(input.startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.event.delete({
       where: { id: input.eventId },

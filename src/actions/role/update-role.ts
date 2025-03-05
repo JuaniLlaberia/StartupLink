@@ -20,7 +20,8 @@ export const updateRole = authenticatedAction
   .createServerAction()
   .input(updateRoleValidator)
   .handler(async ({ input: { id, startupId, ...data }, ctx: { userId } }) => {
-    await isStartupMember(startupId, userId);
+    const isMember = await isStartupMember(startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.startupRole.update({
       where: { id },

@@ -16,7 +16,8 @@ export const createMember = authenticatedAction
   .createServerAction()
   .input(createMemberValidator)
   .handler(async ({ input, ctx: { userId } }) => {
-    await isStartupMember(input.startupId, userId);
+    const isMember = await isStartupMember(input.startupId, userId);
+    if (!isMember) throw new Error('Need to be a member');
 
     await db.startupMember.create({
       data: { ...input },
