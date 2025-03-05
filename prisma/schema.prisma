@@ -1,0 +1,276 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Industry {
+  TECH_SOFTWARE
+  FINANCE
+  HEALTHCARE
+  EDUCATION
+  SUSTAINABILITY
+  ECOMMERCE
+  ENTERTAINMENT
+  TRANSPORTATION
+  FOOD
+  REAL_ESTATE
+  PRODUCTIVITY
+  SOCIAL
+}
+
+enum Stage {
+  IDEA
+  MVP
+  PRE_SEED
+  SEED
+  EARLY_STAGE
+  GROWTH
+  LATE_STAGE
+  EXIT
+}
+
+enum TeamSize {
+  ONE_TO_TEN
+  TEN_TO_FIFTY
+  FIFTY_TO_NINETY_NINE
+  ONE_HUNDRED_OR_MORE
+}
+
+enum Objective {
+  FIND_COFOUNDER // Looking for another co-found
+  JOIN_AS_COFOUNDER // Looking to partner up with someone else
+  JOIN_AS_DEVELOPER // I want to join a startup as a developer
+  INVESTOR // I want to join a startup as an investor
+  HIRING // I have a startup and I am looking for team members
+  NETWORKING // Collaborate with other co-founders
+}
+
+enum QuestionType {
+  QUESTION
+  ADVICE
+  SHOWCASE
+  DISCUSSION
+}
+
+enum WeeklyAvailability {
+  ZERO_TO_TEN
+  TEN_TO_TWENTY
+  TWENTY_TO_THIRTY
+  MORE_THAN_THIRTY
+}
+
+enum EventVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  name               String?
+  email              String              @unique
+  description        String?
+  position           String?
+  location           String?
+  weeklyAvailability WeeklyAvailability?
+  looking            Boolean             @default(true)
+  objective          Objective           @default(FIND_COFOUNDER)
+  image              String?
+  coverImage         String?
+  urls               String[]            @default([])
+  skills             String[]            @default([])
+
+  Startup            Startup[]
+  StartupMember      StartupMember[]
+  Question           Question[]
+  Answer             Answer[]
+  EventAttendee      EventAttendee[]
+  StartupApplication StartupApplication[]
+
+  @@index([email])
+}
+
+model Startup {
+  id         String   @id @default(cuid())
+  name       String
+  slug       String   @unique
+  mission    String
+  location   String?
+  verified   Boolean  @default(false)
+  stage      Stage
+  industry   Industry
+  teamSize   TeamSize
+  image      String?
+  coverImage String?
+  website    String?
+  skills     String[] @default([])
+  createdBy  String
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [createdBy], references: [id])
+
+  StartupMember       StartupMember[]
+  StartupRole         StartupRole[]
+  Upvote              Upvote[]
+  StartupDesignConfig StartupDesignConfig[]
+  Survey              Survey[]
+  Event               Event[]
+  StartupApplication  StartupApplication[]
+
+  @@index([slug])
+  @@index([createdBy])
+  @@index([industry])
+  @@index([teamSize, industry, stage, verified])
+  @@index([name, mission])
+}
+
+model Upvote {
+  id        String @id @default(cuid())
+  userId    String
+  startupId String
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, startupId])
+}
+
+model StartupDesignConfig {
+  id                  String @id @default(cuid())
+  mainBackground      String
+  secondaryBackground String
+  mainText            String
+  secondaryText       String
+  borderRadius        Int
+  startupId           String
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@index([startupId])
+}
+
+model StartupRole {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  active         Boolean  @default(true)
+  requiresSurvey Boolean  @default(false)
+  surveyId       String?
+  startupId      String
+  createdAt      DateTime @default(now())
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  survey  Survey? @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  StartupMember      StartupMember[]
+  StartupApplication StartupApplication[]
+
+  @@index([startupId])
+}
+
+model StartupMember {
+  id        String   @id @default(cuid())
+  startupId String
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  startup Startup     @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    StartupRole @relation(fields: [roleId], references: [id])
+
+  @@unique([startupId, userId])
+  @@index([startupId])
+}
+
+model StartupApplication {
+  id             String   @id @default(cuid())
+  startupId      String
+  userId         String
+  roleId         String
+  surveyResponse Json?
+  createdAt      DateTime @default(now())
+
+  startup Startup     @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    StartupRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  email     String
+  feedback  String
+  createdAt DateTime @default(now())
+}
+
+model Question {
+  id        String       @id @default(cuid())
+  question  String
+  tags      String[]
+  score     Int          @default(0)
+  edited    Boolean      @default(false)
+  type      QuestionType @default(QUESTION)
+  createdBy String
+  createdAt DateTime     @default(now())
+
+  user   User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  Answer Answer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  answer     String
+  score      Int      @default(0)
+  edited     Boolean  @default(false)
+  createdBy  String
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model Survey {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  active      Boolean  @default(true)
+  questions   Json
+  createdAt   DateTime @default(now())
+  startupId   String
+
+  startup     Startup       @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  StartupRole StartupRole[]
+
+  @@index([startupId])
+}
+
+model Event {
+  id            String          @id @default(cuid())
+  name          String
+  description   String?
+  startTime     DateTime
+  endTime       DateTime?
+  visibility    EventVisibility
+  streamingLink String? // For external URL's (Twitch, zoom, google meet)
+  embedCode     String? // For Youtube -> Embed HTML
+  startupId     String
+  createdAt     DateTime        @default(now())
+
+  startup       Startup         @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  EventAttendee EventAttendee[]
+
+  @@index([startupId])
+}
+
+model EventAttendee {
+  id      String @id @default(uuid())
+  userId  String
+  eventId String
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
