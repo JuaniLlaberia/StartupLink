@@ -41,10 +41,9 @@ const LeaveStartupDialog = ({
       onSuccess?.();
       setIsOpen(false);
     },
-    onError: err => {
-      console.log(err);
-      toast.error('Failed to leave startup');
-    },
+    onError: () => 
+      toast.error('Failed to leave startup')
+    ,
     onSettled: () => setIsLoading(false),
   });
 

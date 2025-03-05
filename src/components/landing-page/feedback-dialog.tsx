@@ -56,7 +56,6 @@ const FeebackDialog = () => {
         toast.success('Feedback submitted successfully');
       },
       onError: error => {
-        console.log(error);
         setServerError(error.message || 'Failed to submit feedback');
         toast.error('Fail to submit feedback');
       },

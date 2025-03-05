@@ -93,10 +93,7 @@ const UserProfileForm = ({ user }: { user: User }) => {
     {
       mutationKey: ['update-user'],
       onSuccess: () => toast.success('Account settings updated successfully'),
-      onError: err => {
-        console.log(err);
-        toast.error('Failed to update account settings');
-      },
+      onError: () => toast.error('Failed to update account settings'),
     }
   );
 

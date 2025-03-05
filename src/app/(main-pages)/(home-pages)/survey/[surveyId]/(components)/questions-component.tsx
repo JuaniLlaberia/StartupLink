@@ -163,14 +163,14 @@ const QuestionsComponent = ({
         toast.success('You have applied successfully');
         router.back();
       },
-      onError: () => toast.error('Failed to apply'),
+      onError: err => toast.error(err.message),
     }
   );
 
   const { crrStep, nextStep, prevStep, isLastStep, crrIndex } =
     useMultiStepForm(questionSteps);
 
-  const processSubmit = (data: any) => {
+  const handleOnSubmit = handleSubmit(data => {
     if (!isLastStep) {
       nextStep();
       return;
@@ -183,7 +183,7 @@ const QuestionsComponent = ({
       roleId,
       surveyResponse: responses.length > 0 ? responses : undefined,
     });
-  };
+  });
 
   if (parsedQuestions.length === 0) {
     return <div>No questions available</div>;
@@ -191,7 +191,7 @@ const QuestionsComponent = ({
 
   return (
     <div className='w-full max-w-lg mx-auto py-16'>
-      <form onSubmit={handleSubmit(processSubmit)}>
+      <form onSubmit={handleOnSubmit}>
         {/* Progress indicator */}
         <div className='text-end mb-6'>
           <p className='text-muted-foreground font-medium'>

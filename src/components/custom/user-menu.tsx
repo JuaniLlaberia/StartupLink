@@ -21,7 +21,7 @@ import {
 } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useServerActionQuery } from '@/hooks/use-server-action';
-import { getAuthUser } from '@/access-data/user/public-get-auth-user-by-email';
+import { getAuthUser } from '@/access-data/user/public-get-auth-user';
 import { Skeleton } from '../ui/skeleton';
 
 const LINKS = [

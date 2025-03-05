@@ -27,8 +27,7 @@ const UpvoteButton = ({
         optimisticUpdate(hasUserUpvoted);
       });
     },
-    onError: err => {
-      console.log(err);
+    onError: () => {
       startTransition(() => {
         optimisticUpdate(hasUserUpvoted);
       });
