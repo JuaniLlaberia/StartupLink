@@ -27,6 +27,32 @@ import { useServerActionMutation } from '@/hooks/use-server-action';
 import { createSurvey as createSurveyAction } from '@/actions/survey/create-survey';
 import { updateSurvey as updateSurveyAction } from '@/actions/survey/update-survey';
 
+type TextQuestionType = {
+  id: string;
+  text: string;
+  order: number;
+  type: 'text' | 'textarea';
+  placeholder?: string;
+  maxLength?: number;
+};
+
+type DropdownQuestionOption = {
+  id: string;
+  text: string;
+  order: number;
+};
+
+type DropdownQuestionType = {
+  id: string;
+  text: string;
+  order: number;
+  type: 'dropdown';
+  options: DropdownQuestionOption[];
+  allowOther?: boolean;
+};
+
+type QuestionType = TextQuestionType | DropdownQuestionType;
+
 const formSchema = z.object({
   name: z.string().min(1, 'Must provide a survey name'),
   description: z.string().optional(),
@@ -51,7 +77,7 @@ const SurveyForm = ({ startupId, data }: SurveyFormProps) => {
     name: data?.name || '',
     description: data?.description || '',
     questions: data?.questions
-      ? (data.questions as any)
+      ? (data.questions as QuestionType[])
       : [
           {
             id: uuidv4(),
@@ -115,7 +141,7 @@ const SurveyForm = ({ startupId, data }: SurveyFormProps) => {
         updatedQuestion = baseQuestion;
     }
 
-    setValue(`questions.${index}`, updatedQuestion as any);
+    setValue(`questions.${index}`, updatedQuestion as QuestionType);
   };
 
   const { mutate: createSurvey, isPending: isCreating } =
@@ -191,7 +217,7 @@ const SurveyForm = ({ startupId, data }: SurveyFormProps) => {
 
       <form
         onSubmit={handleSubmit(handleOnSubmit)}
-        className='space-y-6 p-4 max-w-3xl'
+        className='space-y-6 p-2 md:p-4 max-w-3xl'
       >
         {/* Survey Basic Info */}
         <div className='space-y-4'>
