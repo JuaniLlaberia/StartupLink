@@ -20,7 +20,7 @@ export function DashboardSidebar() {
           asChild
           className='flex items-center justify-center hover:bg-transparent h-auto'
         >
-          <Logo size='sm' />
+          <Logo size='sm' forceTitleMobile />
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>

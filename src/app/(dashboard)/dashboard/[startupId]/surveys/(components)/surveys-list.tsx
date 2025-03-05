@@ -28,7 +28,7 @@ const SurveysList = ({
             {surveys.map(survey => (
               <li
                 key={survey.id}
-                className='w-full max-w-2xl flex items-center border border-border rounded-lg p-4'
+                className='w-full max-w-2xl flex flex-col gap-4 md:flex-row md:gap-0 items-center border border-border rounded-lg p-4'
               >
                 <div className='w-full'>
                   <h3 className='text-sm font-medium'>{survey.name}</h3>
@@ -37,12 +37,18 @@ const SurveysList = ({
                   </p>
                   <div className='flex mt-3 space-x-2.5'>
                     {survey.active ? (
-                      <Badge className='flex items-center gap-1.5 w-auto text-green-500 bg-green-200/60 hover:bg-green-200/80'>
+                      <Badge
+                        variant='secondary'
+                        className='flex items-center gap-1.5 w-auto text-green-500 bg-green-200/60 hover:bg-green-200/80'
+                      >
                         <div className='size-[6px] shrink-0 rounded-full animate-pulse bg-green-500' />
                         Active
                       </Badge>
                     ) : (
-                      <Badge className='flex items-center gap-1.5 w-auto text-red-500 bg-red-200/60 hover:bg-red-200/80'>
+                      <Badge
+                        variant='secondary'
+                        className='flex items-center gap-1.5 w-auto text-red-500 bg-red-200/60 hover:bg-red-200/80'
+                      >
                         <div className='size-[0.4rem] shrink-0 rounded-full bg-red-500' />
                         Inactive
                       </Badge>
@@ -52,13 +58,16 @@ const SurveysList = ({
                     </p>
                   </div>
                 </div>
-                <div className='flex items-center gap-1.5'>
+                <div className='flex items-center gap-1.5 w-full'>
                   <Link
                     href={`/dashboard/${startupId}/surveys/${survey.id}`}
-                    className={buttonVariants({
-                      size: 'sm',
-                      variant: 'outline',
-                    })}
+                    className={cn(
+                      buttonVariants({
+                        size: 'sm',
+                        variant: 'outline',
+                      }),
+                      'w-full md:w-auto'
+                    )}
                   >
                     <Edit className='size-3 text-muted-foreground' />
                     Edit survey
@@ -69,7 +78,11 @@ const SurveysList = ({
                     startupId={startupId}
                     surveyName={survey.name}
                     trigger={
-                      <Button size='icon' variant='outline' className='size-7'>
+                      <Button
+                        size='icon'
+                        variant='outline'
+                        className='size-7 [&_svg]:size-4'
+                      >
                         <Trash2 className='text-red-500' />
                       </Button>
                     }

@@ -74,10 +74,8 @@ const PeoplePage = async ({
   });
 
   return (
-    <section className='grid md:grid-cols-[300px_1fr] gap-8 p-1 py-8'>
-      <aside className='hidden md:block'>
-        <FiltersForm filters={PEOPLE_FILTERS} />
-      </aside>
+    <section className='grid md:grid-cols-[300px_1fr] gap-3 md:gap-8 p-1 py-8'>
+      <FiltersForm filters={PEOPLE_FILTERS} />
       <div className='min-h-[75dvh]'>
         <h1 className='text-sm font-semibold mb-3'>People</h1>
         <ul className='space-y-3'>

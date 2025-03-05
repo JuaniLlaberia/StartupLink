@@ -12,7 +12,7 @@ type UserSheetProps = { data: User };
 
 const UserSheet = ({ data }: UserSheetProps) => {
   return (
-    <SheetContent className='p-2'>
+    <SheetContent className='p-2 w-11/12'>
       <DialogTitle />
       <div className='relative mb-9'>
         {data.coverImage ? (
@@ -47,11 +47,11 @@ const UserSheet = ({ data }: UserSheetProps) => {
       <Separator className='my-5' />
 
       <ScrollArea className='w-full h-[350px] pb-2'>
-        <div className='px-3'>
+        <div className='px-3 space-y-1.5'>
           <h3 className='text-xs font-medium text-muted-foreground'>
             Description
           </h3>
-          <p className='text-sm'>{data.description}</p>
+          <p className='text-sm'>{data.description || 'Not specified'}</p>
         </div>
         <div className='px-3 mt-6'>
           <UserSkills skills={data.skills} />

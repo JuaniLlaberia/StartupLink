@@ -18,7 +18,7 @@ type StartupSheetProps = { data: StartupData };
 
 const StartupSheet = ({ data }: StartupSheetProps) => {
   return (
-    <SheetContent className='p-2'>
+    <SheetContent className='p-2 w-11/12'>
       <DialogTitle />
       <div className='relative mb-9'>
         {data.coverImage ? (
@@ -49,9 +49,9 @@ const StartupSheet = ({ data }: StartupSheetProps) => {
 
       <Separator className='my-5' />
 
-      <ScrollArea className='w-full h-[350px] pb-2'>
-        <div className='px-3'>
-          <h3 className='text-xs font-medium text-muted-foreground'>
+      <ScrollArea className='w-full h-[350px] pb-16 md:pb-2'>
+        <div className='px-3 space-y-1.5'>
+          <h3 className='text-sm md:text-xs font-medium text-muted-foreground'>
             Our mission
           </h3>
           <p className='text-sm'>{data.mission}</p>
@@ -62,8 +62,8 @@ const StartupSheet = ({ data }: StartupSheetProps) => {
         {data.roles.length > 0 && (
           <>
             <Separator className='my-5' />
-            <div className='px-3'>
-              <h3 className='text-xs text-muted-foreground font-medium'>
+            <div className='px-3 space-y-1.5'>
+              <h3 className='text-sm md:text-xs text-muted-foreground font-medium'>
                 Looking for
               </h3>
               <ul className='my-3 space-y-2.5'>
@@ -73,13 +73,15 @@ const StartupSheet = ({ data }: StartupSheetProps) => {
                     className='flex items-center justify-between gap-5 w-full bg-muted/50 border border-border rounded-lg p-4 shadow'
                   >
                     <div className='flex items-center gap-5'>
-                      <Avatar className='size-12'>
+                      <Avatar className='size-12 hidden md:flex'>
                         <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
                         <AvatarImage src={data.image ?? undefined} />
                       </Avatar>
                       <div>
-                        <h6 className='font-semibold'>{role.name}</h6>
-                        <p className='text-muted-foreground text-sm'>
+                        <h6 className='font-semibold text-sm md:text-base'>
+                          {role.name}
+                        </h6>
+                        <p className='text-muted-foreground text-xs md:text-sm'>
                           {role.description}
                         </p>
                       </div>

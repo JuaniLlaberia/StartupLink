@@ -24,7 +24,7 @@ const EventsList = ({
             {events.map(event => (
               <li
                 key={event.id}
-                className='w-full max-w-3xl flex items-center gap-6 border border-border rounded-lg p-4'
+                className='w-full max-w-3xl flex flex-col md:flex-row md:items-center gap-6 border border-border rounded-lg p-4'
               >
                 <div className='w-full'>
                   <h3 className='text-sm font-medium'>{event.name}</h3>

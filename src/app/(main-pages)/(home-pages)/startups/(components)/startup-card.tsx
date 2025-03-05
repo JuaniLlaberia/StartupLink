@@ -29,11 +29,6 @@ const StartupCard = ({ data }: StartupCardProps) => {
             <StartupSkills skills={data.skills} />
           </div>
           <div className='flex items-center justify-end gap-3'>
-            {data.looking && (
-              <p className='text-xs text-muted-foreground'>
-                Looking for people
-              </p>
-            )}
             {data.openRoles && (
               <Badge
                 variant='secondary'
@@ -49,7 +44,7 @@ const StartupCard = ({ data }: StartupCardProps) => {
           </div>
           <UpvoteButton
             startupId={data.id}
-            className='absolute top-0 right-5'
+            className='absolute top-0 right-5 hidden md:block'
             hasUserUpvoted={data.hasUserUpvoted}
           />
         </li>

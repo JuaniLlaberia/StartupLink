@@ -30,7 +30,7 @@ const RolesList = ({
                   <p className='text-sm text-muted-foreground'>
                     {role.description}
                   </p>
-                  <div className='flex mt-3 space-x-2.5'>
+                  <div className='flex flex-col items-start justify-start gap-2.5 mt-3 md:flex-row md:gap-0 md:space-x-2.5'>
                     {role.active ? (
                       <Badge
                         variant='secondary'
@@ -75,7 +75,11 @@ const RolesList = ({
                     startupId={role.startupId}
                     roleName={role.name}
                     trigger={
-                      <Button size='icon' variant='outline' className='size-7'>
+                      <Button
+                        size='icon'
+                        variant='outline'
+                        className='size-7 [&_svg]:size-4'
+                      >
                         <Trash2 className='text-red-500' />
                       </Button>
                     }

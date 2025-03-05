@@ -54,7 +54,7 @@ const UserEventsList = ({ events }: UserEventsListProps) => {
           key={event.id}
           className='w-full max-w-2xl flex items-start gap-5 border border-border rounded-lg p-4'
         >
-          <Avatar className='size-16'>
+          <Avatar className='size-10 md:size-16'>
             <AvatarFallback>{event.startup.name.charAt(0)}</AvatarFallback>
             <AvatarImage src={event.startup.image ?? undefined} />
           </Avatar>
@@ -63,7 +63,7 @@ const UserEventsList = ({ events }: UserEventsListProps) => {
             <p className='text-sm text-muted-foreground max-w-lg'>
               {event.description}
             </p>
-            <div className='flex items-center mt-3 gap-5'>
+            <div className='flex flex-col md:flex-row md:items-center mt-3 gap-2.5 md:gap-5'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Mic className='size-4' />
                 <p>

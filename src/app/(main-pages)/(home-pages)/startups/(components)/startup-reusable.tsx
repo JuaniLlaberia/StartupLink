@@ -5,15 +5,17 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { INDUSTRY_LABELS, STAGE_LABELS, TEAM_SIZE_LABELS } from '@/lib/labels';
 import { Badge } from '@/components/ui/badge';
 
-export type StartupData = Startup & { user: { name: string | null } } & {
+export type StartupData = Omit<Startup, 'slug' | 'website'> & {
+  user: { name: string | null };
+} & {
   hasUserUpvoted: boolean;
 } & { openRoles: number } & {
   roles: {
     id: string;
     name: string;
-    description: string;
+    description: string | null;
     requiresSurvey: boolean;
-    surveyId: string;
+    surveyId: string | null;
   }[];
 };
 
@@ -74,7 +76,7 @@ export const StartupMetadata = ({
 
 export const StartupSkills = ({ skills }: Pick<StartupData, 'skills'>) => (
   <div className='space-y-1.5'>
-    <h3 className='text-xs text-muted-foreground font-medium'>
+    <h3 className='text-sm md:text-xs text-muted-foreground font-medium'>
       Application stack
     </h3>
     <ul className='flex flex-wrap gap-2'>

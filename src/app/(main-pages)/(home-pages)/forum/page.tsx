@@ -75,12 +75,10 @@ const ForumPage = async ({
   });
 
   return (
-    <section className='grid md:grid-cols-[300px_1fr] gap-8 p-1 py-8'>
-      <aside className='hidden md:block'>
-        <FiltersForm filters={QUESTIONS_FILTERS} sorts={QUESTIONS_SORTS} />
-      </aside>
+    <section className='grid md:grid-cols-[300px_1fr] gap-3 md:gap-8 p-1 py-8'>
+      <FiltersForm filters={QUESTIONS_FILTERS} sorts={QUESTIONS_SORTS} />
       <div className='min-h-[75dvh]'>
-        <div className='flex items-center justify-between mb-3'>
+        <div className='flex flex-col gap-1 md:flex-row md:items-center md:justify-between mb-5 md:mb-3'>
           <h1 className='text-sm font-semibold'>Questions</h1>
           <div className='flex items-center gap-2.5'>
             <h2 className='text-xs font-medium'>

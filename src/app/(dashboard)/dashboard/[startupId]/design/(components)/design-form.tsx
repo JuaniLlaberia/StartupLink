@@ -138,10 +138,7 @@ const DesignForm = ({
     {
       mutationKey: ['update-design-config'],
       onSuccess: () => toast.success('Design saved successully'),
-      onError: err => {
-        console.log(err);
-        toast.error('Failed to save design');
-      },
+      onError: err => toast.error(err.message),
     }
   );
 
@@ -150,7 +147,7 @@ const DesignForm = ({
       <div className='space-y-4'>
         <div>
           <h2 className='text-sm font-medium mb-1'>Themes</h2>
-          <ul className='w-full grid grid-cols-4 gap-2.5'>
+          <ul className='w-full grid grid-cols-2 md:grid-cols-4 gap-2.5'>
             {themePresets.map((theme, index) => (
               <li
                 key={index}

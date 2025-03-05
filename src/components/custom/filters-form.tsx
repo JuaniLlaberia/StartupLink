@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Filter, Loader2 } from 'lucide-react';
 
 import { useCreateQueryString } from '@/hooks/use-create-query-string';
 import { Button } from '../ui/button';
@@ -14,6 +14,13 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Label } from '../ui/label';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer';
 
 type Value = {
   label: string;
@@ -134,9 +141,8 @@ const FiltersForm = ({ filters: FILTERS, sorts: SORTS }: FiltersFormProps) => {
     setIsResetting(false);
   }, [searchParams]);
 
-  return (
-    <div className='space-y-4'>
-      <h3 className='text-sm font-semibold'>Filter & Sort</h3>
+  const content = (
+    <>
       <ul>
         {FILTERS.map(({ key, label, placeholder, values }) => (
           <li key={label} className='mb-2 px-0.5'>
@@ -190,11 +196,12 @@ const FiltersForm = ({ filters: FILTERS, sorts: SORTS }: FiltersFormProps) => {
           </li>
         ))}
       </ul>
-      <div className='flex items-center space-x-2.5'>
+      <div className='flex items-center space-x-2.5 pt-6 md:pt-1'>
         <Button
           size='sm'
           onClick={handleApplyFilters}
           disabled={isLoading || isResetting}
+          className='w-full md:w-auto'
         >
           {isLoading && <Loader2 className='size-4 animate-spin' />}
           Apply
@@ -204,12 +211,41 @@ const FiltersForm = ({ filters: FILTERS, sorts: SORTS }: FiltersFormProps) => {
           variant='outline'
           onClick={handleResetFilters}
           disabled={isLoading || isResetting}
+          className='w-full md:w-auto'
         >
           {isResetting && <Loader2 className='size-4 animate-spin' />}
           Reset all
         </Button>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop view */}
+      <aside className='hidden md:block'>
+        <div className='space-y-4'>
+          <h3 className='text-sm font-semibold'>Filter & Sort</h3>
+          {content}
+        </div>
+      </aside>
+      {/* Mobile view */}
+      <div className='md:hidden'>
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button size='sm' variant='outline' className='w-full'>
+              <Filter className='size-4' /> Filter & Sort
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Filter & Sort</DrawerTitle>
+            </DrawerHeader>
+            <div className='space-y-4 p-4'>{content}</div>
+          </DrawerContent>
+        </Drawer>
+      </div>
+    </>
   );
 };
 

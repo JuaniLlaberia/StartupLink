@@ -30,7 +30,7 @@ const RoleApplicationBtn = ({
     {
       mutationKey: ['create-application'],
       onSuccess: () => toast.success('You have applied successfully'),
-      onError: () => toast.error('Failed to apply'),
+      onError: err => toast.error(err.message),
     }
   );
 
@@ -40,7 +40,8 @@ const RoleApplicationBtn = ({
         href={`/survey/${surveyId}?roleId=${roleId}`}
         className={cn(buttonVariants({ size }), 'group')}
       >
-        Apply to join
+        <span className='hidden md:block'>Apply to join</span>
+        <span className='md:hidden'>Join</span>
         <ChevronRight className='size-4 group-hover:translate-x-1 transition-transform' />
       </Link>
     );
@@ -55,7 +56,8 @@ const RoleApplicationBtn = ({
       disabled={isPending}
     >
       {isPending && <Loader2 className='size-4 animate-spin' />}
-      Apply to join
+      <span className='hidden md:block'>Apply to join</span>
+      <span className='md:hidden'>Join</span>
       {!isPending && (
         <ChevronRight className='size-4 group-hover:translate-x-1 transition-transform' />
       )}

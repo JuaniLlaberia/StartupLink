@@ -2,7 +2,13 @@ import Link from 'next/link';
 import { Infinity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const Logo = ({ size = 'default' }: { size?: 'sm' | 'default' }) => {
+const Logo = ({
+  size = 'default',
+  forceTitleMobile = false,
+}: {
+  size?: 'sm' | 'default';
+  forceTitleMobile?: boolean;
+}) => {
   return (
     <Link href='/' className='flex items-center gap-2.5'>
       <div
@@ -18,8 +24,9 @@ const Logo = ({ size = 'default' }: { size?: 'sm' | 'default' }) => {
       </div>
       <h1
         className={cn(
-          'font-bold hidden md:block group-data-[collapsible=icon]:hidden',
-          size === 'default' ? 'text-xl' : 'text-lg'
+          'font-bold group-data-[collapsible=icon]:hidden',
+          size === 'default' ? 'text-xl' : 'text-lg',
+          forceTitleMobile ? 'block' : 'hidden md:block'
         )}
       >
         StartupLink
